@@ -10,14 +10,13 @@ public class Contact implements Serializable{
     private String name;
     private String email;
 
+    public static final Contact createGmailContact(String name){
+        return new Contact(name, name + "@gmail.com");
+    }
+
     public Contact(String n, String e){
         name = n;
         email = e;
-    }
-
-    public Contact(String n){
-        name = n;
-        email = n + "@gmail.com";
     }
 
     public String getName() {

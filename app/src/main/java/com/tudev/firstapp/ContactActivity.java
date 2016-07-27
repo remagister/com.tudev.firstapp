@@ -6,19 +6,21 @@ import android.widget.TextView;
 
 public class ContactActivity extends AppCompatActivity {
 
+    public static final String CONTACT_BUNDLE_KEY = "CONTACT_BUNDLE_KEY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
 
-        String key = getString(R.string.contact_bundle_key);
         Bundle extras = getIntent().getExtras();
         Contact contact;
         if (extras != null) {
-            contact = (Contact)extras.get(key);
+            contact = (Contact)extras.get(CONTACT_BUNDLE_KEY);
         }
         else{
-            contact = new Contact("<undefined>", "<undefined>");
+            String undefined = getString(R.string.undefined_contact);
+            contact = new Contact(undefined, undefined);
         }
 
         TextView nameTextView = (TextView)findViewById(R.id.contactNameLabel);

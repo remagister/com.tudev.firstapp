@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">FirstApp</string>
-    <string name="contact_bundle_key">CONTACT_BUNDLE_KEY</string>
+    <string name="undefined_contact">&lt;undefined&gt;</string>
 </resources>

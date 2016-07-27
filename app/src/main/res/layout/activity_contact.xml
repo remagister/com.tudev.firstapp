@@ -30,7 +30,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:background="#e0e0e0" />
+        android:background="#e0e0e0"
+        android:longClickable="false" />
 
     <TextView
         android:layout_width="wrap_content"

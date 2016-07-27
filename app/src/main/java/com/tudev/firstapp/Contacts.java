@@ -1,40 +1,50 @@
 package com.tudev.firstapp;
 
+import android.provider.CalendarContract;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Created by Саша on 27.07.2016.
  */
-public class Contacts {
-    private static Contacts instance = new Contacts();
 
-    public static Contacts getInstance() {
-        return instance;
+public enum Contacts{
+    Instance;
+
+    private ArrayList<Contact> contactsList;
+    Contacts(){
+        contactsList = arrayToArrayList(new Contact[]{
+                Contact.createGmailContact("Alex"),
+                Contact.createGmailContact("Bill"),
+                Contact.createGmailContact("Tim"),
+                Contact.createGmailContact("Bob"),
+                Contact.createGmailContact("Alice"),
+                Contact.createGmailContact("Kate"),
+                Contact.createGmailContact("Tony"),
+                Contact.createGmailContact("Marlin"),
+                Contact.createGmailContact("Sam"),
+                Contact.createGmailContact("Eli"),
+                Contact.createGmailContact("Josh"),
+                Contact.createGmailContact("Ted"),
+                Contact.createGmailContact("Walter"),
+                Contact.createGmailContact("Steve"),
+                Contact.createGmailContact("Jack"),
+                Contact.createGmailContact("Peter"),
+                Contact.createGmailContact("Linus")
+        });
     }
 
-    private Contact[] contacts;
-
-    private Contacts() {
-        contacts = new Contact[]{
-                new Contact("Alex"),
-                new Contact("Bill"),
-                new Contact("Tim"),
-                new Contact("Bob"),
-                new Contact("Alice"),
-                new Contact("Kate"),
-                new Contact("Tony"),
-                new Contact("Marlin"),
-                new Contact("Sam"),
-                new Contact("Eli"),
-                new Contact("Josh"),
-                new Contact("Ted"),
-                new Contact("Walter"),
-                new Contact("Steve"),
-                new Contact("Jack"),
-                new Contact("Peter"),
-                new Contact("Linus")
-        };
+    public ArrayList<Contact> getContacts(){
+        return contactsList;
     }
 
-    public Contact[] getContacts(){
-        return contacts;
+    private ArrayList<Contact> arrayToArrayList(Contact[] array){
+        ArrayList<Contact> ret = new ArrayList<>();
+        for (int i = 0; i < array.length; i++) {
+            ret.add(array[i]);
+        }
+        return ret;
     }
 }
