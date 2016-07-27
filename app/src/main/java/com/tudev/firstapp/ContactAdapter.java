@@ -1,11 +1,13 @@
 package com.tudev.firstapp;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -13,22 +15,35 @@ import android.widget.TextView;
  */
 public class ContactAdapter extends BaseAdapter {
 
-    private Contact internalContacts[];
-    private Context internalContext;
+    private List<Contact> internalContacts;
+    private LayoutInflater inflater;
 
-    public ContactAdapter(Context context, Contact contacts[]){
-        internalContext = context;
-        internalContacts = contacts;
+    public ContactAdapter(LayoutInflater infl, List<Contact> contacts){
+        inflater = infl;
+        internalContacts = new ArrayList<>();
+        internalContacts.addAll(contacts);
+    }
+
+    static class ViewHolder{
+        TextView nameLabel;
+        TextView emailLabel;
+    }
+
+    private ViewHolder createHolder(View view){
+        ViewHolder ret = new ViewHolder();
+        ret.nameLabel = (TextView)view.findViewById(R.id.nameText);
+        ret.emailLabel = (TextView)view.findViewById(R.id.descrText);
+        return ret;
     }
 
     @Override
     public int getCount() {
-        return internalContacts.length;
+        return internalContacts.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return internalContacts[i];
+    public Contact getItem(int i) {
+        return internalContacts.get(i);
     }
 
     @Override
@@ -38,14 +53,18 @@ public class ContactAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        ViewHolder holder;
         if(view == null){
-            LayoutInflater inflater = (LayoutInflater) internalContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.contact_view, viewGroup, false);  // do not attach to root
+            holder = createHolder(view);
+            view.setTag(holder);
         }
-        TextView name = (TextView)view.findViewById(R.id.nameText);
-        TextView email = (TextView)view.findViewById(R.id.descrText);
-        name.setText(internalContacts[i].getName());
-        email.setText(internalContacts[i].getEmail());
+        else {
+            holder = (ViewHolder) view.getTag();
+        }
+        Contact currentContact = getItem(i);
+        holder.nameLabel.setText(currentContact.getName());
+        holder.emailLabel.setText(currentContact.getEmail());
         return view;
     }
 }
