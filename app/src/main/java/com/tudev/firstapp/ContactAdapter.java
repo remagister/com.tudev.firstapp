@@ -27,6 +27,7 @@ public class ContactAdapter extends BaseAdapter {
     static class ViewHolder{
         TextView nameLabel;
         TextView emailLabel;
+        
     }
 
     private ViewHolder createHolder(View view){

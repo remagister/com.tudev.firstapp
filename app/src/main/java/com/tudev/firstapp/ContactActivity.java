@@ -14,19 +14,20 @@ public class ContactActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contact);
 
         Bundle extras = getIntent().getExtras();
+        String undefined = getString(R.string.undefined_contact);
         Contact contact;
         if (extras != null) {
             contact = (Contact)extras.get(CONTACT_BUNDLE_KEY);
         }
         else{
-            String undefined = getString(R.string.undefined_contact);
+
             contact = new Contact(undefined, undefined);
         }
 
         TextView nameTextView = (TextView)findViewById(R.id.contactNameLabel);
-        nameTextView.setText(contact.getName());
+        nameTextView.setText(contact == null ? undefined : contact.getName());
         TextView emailTextView = (TextView)findViewById(R.id.contactEmailLabel);
-        emailTextView.setText(contact.getEmail());
+        emailTextView.setText(contact == null ? undefined : contact.getEmail());
 
     }
 }
