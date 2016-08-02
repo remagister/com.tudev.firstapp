@@ -4,7 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -17,12 +22,16 @@ import com.tudev.firstapp.data.SimpleContactDatabase;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.R.color.holo_red_dark;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int TAG_ID = 1;
+    private static final int CONTACT_ACTIVITY_RCODE = 1;
+    public static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
 
     ContactAccessor accessor;
 
@@ -31,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView listView = (ListView) findViewById(R.id.listViewOne);
+        final ListView listView = (ListView) findViewById(R.id.listViewOne);
         final Button actionButton = (Button) findViewById(R.id.listActionButton);
         accessor = new SimpleContactDatabase(new SQLContactHelper(getApplicationContext()));
         final ContactAdapter adapter = new ContactAdapter(getLayoutInflater(), accessor.getSimpleContacts());
@@ -47,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+
         listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -67,9 +77,19 @@ public class MainActivity extends AppCompatActivity {
                 switch (intent){
                     case ADD:{
                         // TODO: start activity_edit view with CREATE param
+                        Intent createIntent = new Intent(MainActivity.this, EditContactActivity.class);
+                        createIntent.putExtra(CONTACT_EDIT_INTENT_KEY, ContactActionIntent.CREATE);
+                        MainActivity.this.startActivityForResult(createIntent,CONTACT_ACTIVITY_RCODE);
                     }
                     case REMOVE:{
-
+                        SparseBooleanArray array = listView.getCheckedItemPositions();
+                        List<Contact.ContactSimple> removeList = new ArrayList<>();
+                        for (int i = 0; i < array.size(); ++i) {
+                            if(array.get(i)){
+                                removeList.add((Contact.ContactSimple) listView.getItemAtPosition(i));
+                            }
+                        }
+                        accessor.removeContacts(removeList);
                     }
                 }
             }
