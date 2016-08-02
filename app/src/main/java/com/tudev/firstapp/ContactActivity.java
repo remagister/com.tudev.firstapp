@@ -28,7 +28,7 @@ public class ContactActivity extends AppCompatActivity {
 
         TextView nameTextView = (TextView)findViewById(R.id.contactNameLabel);
         nameTextView.setText(contact == null ? undefined : contact.getName());
-        TextView emailTextView = (TextView)findViewById(R.id.contactEmailLabel);
+        TextView emailTextView = (TextView)findViewById(R.id.contactTextEmail);
         emailTextView.setText(contact == null ? undefined : contact.getEmail());
 
     }

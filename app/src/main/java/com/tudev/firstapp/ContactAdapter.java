@@ -17,10 +17,10 @@ import java.util.List;
  */
 public class ContactAdapter extends BaseAdapter {
 
-    private List<Contact> internalContacts;
+    private List<Contact.ContactSimple> internalContacts;
     private LayoutInflater inflater;
 
-    public ContactAdapter(LayoutInflater infl, List<Contact> contacts){
+    public ContactAdapter(LayoutInflater infl, List<Contact.ContactSimple> contacts){
         inflater = infl;
         internalContacts = new ArrayList<>();
         internalContacts.addAll(contacts);
@@ -28,14 +28,14 @@ public class ContactAdapter extends BaseAdapter {
 
     static class ViewHolder{
         TextView nameLabel;
-        TextView emailLabel;
+        TextView infoLabel;
         
     }
 
     private ViewHolder createHolder(View view){
         ViewHolder ret = new ViewHolder();
         ret.nameLabel = (TextView)view.findViewById(R.id.nameText);
-        ret.emailLabel = (TextView)view.findViewById(R.id.descrText);
+        ret.infoLabel = (TextView)view.findViewById(R.id.descrText);
         return ret;
     }
 
@@ -45,7 +45,7 @@ public class ContactAdapter extends BaseAdapter {
     }
 
     @Override
-    public Contact getItem(int i) {
+    public Contact.ContactSimple getItem(int i) {
         return internalContacts.get(i);
     }
 
@@ -65,9 +65,9 @@ public class ContactAdapter extends BaseAdapter {
         else {
             holder = (ViewHolder) view.getTag();
         }
-        Contact currentContact = getItem(i);
+        Contact.ContactSimple currentContact = getItem(i);
         holder.nameLabel.setText(currentContact.getName());
-        holder.emailLabel.setText(currentContact.getEmail());
+        holder.infoLabel.setText(currentContact.getPhone());
         return view;
     }
 }

@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">FirstApp</string>
     <string name="undefined_contact">&lt;undefined&gt;</string>
+    <string name="name_label">Name:</string>
+    <string name="email_label">Email:</string>
+    <string name="phone_label">Phone:</string>
+    <string name="contact_label">Contact</string>
+    <string name="add_button">add contact</string>
+    <string name="edit_button">edit contact</string>
+    <string name="remove_button">delete</string>
+    <string name="image_change_text">Tap to load picture</string>
+    <string name="name_hint">Type name here</string>
+    <string name="email_hint">Type email here</string>
+    <string name="phone_hint">Type phone here</string>
+    <string name="accept_button">Accept</string>
 </resources>

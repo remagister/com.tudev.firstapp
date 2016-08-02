@@ -6,8 +6,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.BaseAdapter;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +23,8 @@ public class SimpleContactDatabase implements ContactAccessor{
     private SQLiteOpenHelper internalHelper;
     private List<Contact.ContactSimple> contactList;
 
+    private BaseAdapter adapterToNotify ;
+
     public SimpleContactDatabase(SQLiteOpenHelper helper){
         internalHelper = helper;
     }
@@ -37,6 +39,16 @@ public class SimpleContactDatabase implements ContactAccessor{
     private byte[] getBytes(Cursor cursor, String field){
         return cursor.getBlob(cursor.getColumnIndex(field));
     }
+
+    private void notifyAdapter(){
+        if(adapterToNotify != null) {
+            adapterToNotify.notifyDataSetChanged();
+        }
+    }
+    public void setAdapterToNotify(BaseAdapter adapterToNotify) {
+        this.adapterToNotify = adapterToNotify;
+    }
+
 
     @Override
     public void close() throws IOException {
@@ -99,6 +111,14 @@ public class SimpleContactDatabase implements ContactAccessor{
     private void cacheRemove(long id){
         if(contactList != null){
             contactList.remove(new Contact.ContactSimple(id));
+            notifyAdapter();
+        }
+    }
+
+    private void cacheRemove(List<Contact.ContactSimple> removal){
+        if(contactList != null){
+            contactList.removeAll(removal);
+            notifyAdapter();
         }
     }
 
@@ -111,10 +131,27 @@ public class SimpleContactDatabase implements ContactAccessor{
         cacheRemove(id);
     }
 
+    @Override
+    public void removeContacts(List<Contact.ContactSimple> removal) {
+        SQLiteDatabase db = internalHelper.getReadableDatabase();
+        StringBuilder builder = new StringBuilder();
+        builder.append("DELETE FROM " + ContactEntry.TABLE_CONTACTS + " WHERE "
+                + ContactEntry._ID + " IN " + "(");
+        for (Contact.ContactSimple contact : removal) {
+            builder.append(String.valueOf(contact.getId()) + ",");
+        }
+        builder.deleteCharAt(builder.length()-1);   // remove last ','
+        builder.append(')');
+        db.execSQL(builder.toString());
+        db.close();
+        cacheRemove(removal);
+    }
+
     private void cacheUpdate(Contact.ContactSimple newContact){
         if (contactList != null) {
             int index = contactList.indexOf(newContact);
             contactList.set(index, newContact);
+            notifyAdapter();
         }
     }
 
@@ -136,6 +173,7 @@ public class SimpleContactDatabase implements ContactAccessor{
     private void cacheAdd(Contact.ContactSimple contact){
         if (contactList != null) {
             contactList.add(contact);
+            notifyAdapter();
         }
     }
 

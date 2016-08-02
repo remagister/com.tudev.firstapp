@@ -11,6 +11,7 @@ public interface ContactAccessor extends Closeable {
     public List<Contact.ContactSimple> getSimpleContacts();
     public Contact getContact(long id);
     public void removeContact(long id);
+    public void removeContacts(List<Contact.ContactSimple> removal);
     public void updateContact(long id, Contact newContact);
     public void addContact(Contact contact);
 
