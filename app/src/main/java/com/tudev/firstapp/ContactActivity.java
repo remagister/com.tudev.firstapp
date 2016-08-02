@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.tudev.firstapp.data.Contact;
+
 public class ContactActivity extends AppCompatActivity {
 
     public static final String CONTACT_BUNDLE_KEY = "CONTACT_BUNDLE_KEY";

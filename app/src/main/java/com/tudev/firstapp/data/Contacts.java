@@ -1,10 +1,8 @@
-package com.tudev.firstapp;
+package com.tudev.firstapp.data;
 
-import android.provider.CalendarContract;
+import com.tudev.firstapp.data.Contact;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by Саша on 27.07.2016.
