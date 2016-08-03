@@ -1,16 +1,10 @@
 package com.tudev.firstapp;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -19,20 +13,16 @@ import android.widget.Toast;
 
 import com.tudev.firstapp.data.Contact;
 import com.tudev.firstapp.data.ContactAccessor;
-import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.SQLContactHelper;
 import com.tudev.firstapp.data.SimpleContactDatabase;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.color.holo_red_dark;
-
 public class MainActivity extends AppCompatActivity {
 
-    private static final int TAG_ID = 1;
+    //private static final int TAG_ID = 1;
     private static final int CONTACT_ACTIVITY_RCODE = 1;
     public static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
 
@@ -45,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ListView listView = (ListView) findViewById(R.id.listViewOne);
-        listView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_view, listView));
+        listView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_view, null));
         final Button actionButton = (Button) findViewById(R.id.listActionButton);
         accessor = new SimpleContactDatabase(new SQLContactHelper(getApplicationContext()));
         adapter = new ContactAdapter(getLayoutInflater(), accessor.getSimpleContacts());
@@ -61,30 +51,33 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+        actionButton.setTag(AddButtonIntent.ADD);
 
         listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 actionButton.setText(MainActivity.this.getString(R.string.remove_button));
-                actionButton.setTag(TAG_ID, AddButtonIntent.REMOVE);
+                actionButton.setTag(AddButtonIntent.REMOVE);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 actionButton.setText(MainActivity.this.getString(R.string.add_button));
-                actionButton.setTag(TAG_ID, AddButtonIntent.ADD);
+                actionButton.setTag(AddButtonIntent.ADD);
             }
         });
+
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AddButtonIntent intent = (AddButtonIntent) actionButton.getTag(TAG_ID);
+                AddButtonIntent intent = (AddButtonIntent) actionButton.getTag();
                 switch (intent){
                     case ADD:{
                         // TODO: start activity_edit view with CREATE param
                         Intent createIntent = new Intent(MainActivity.this, EditContactActivity.class);
                         createIntent.putExtra(CONTACT_EDIT_INTENT_KEY, ContactActionIntent.CREATE);
                         MainActivity.this.startActivity(createIntent);
+                        break;
                     }
                     case REMOVE:{
                         SparseBooleanArray array = listView.getCheckedItemPositions();
@@ -96,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         accessor.removeContacts(removeList);
                         adapter.notifyDataSetChanged();
+                        break;
                     }
                 }
             }
@@ -103,15 +97,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
+    protected void onResume() {
         // user re-enters activity here
-        SimpleApplication app = (SimpleApplication)getApplication();
-        if(app.getState() == ContactDBState.MODIFIED) {
+        if(DBState.INSTANCE.getState() == ContactDBState.MODIFIED) {
             accessor.invalidate();
             adapter.notifyDataSetChanged();
-            app.setState(ContactDBState.INTACT);
+            DBState.INSTANCE.reset();
         }
-        super.onStart();
+        super.onResume();
     }
 
     @Override

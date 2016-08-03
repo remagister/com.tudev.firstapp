@@ -12,5 +12,5 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:textColor="#bdbdbd"
-        android:textSize="32dp" />
+        android:textSize="32sp" />
 </RelativeLayout>

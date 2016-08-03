@@ -1,15 +1,16 @@
 package com.tudev.firstapp.data;
 
 import java.io.Serializable;
+import java.io.StringReader;
 
 /**
  * Created by Саша on 26.07.2016.
  */
 
 public class Contact implements Serializable, Comparable<Contact>{
-    private String name;
-    private String email;
-    private String phone;
+    private String name = "";
+    private String email = "";
+    private String phone = "";
     private long id;
     private byte[] image;
     public static final Contact createGmailContact(String name){

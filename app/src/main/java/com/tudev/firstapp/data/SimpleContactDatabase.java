@@ -62,6 +62,15 @@ public class SimpleContactDatabase implements ContactAccessor{
         return ret;
     }
 
+    private void fillListSimple(List<Contact.ContactSimple> list, Cursor cursor){
+        while (cursor.moveToNext()) {
+            Contact.ContactSimple contact = new Contact.ContactSimple(getId(cursor));
+            contact.setName(getString(cursor, ContactEntry.CONTACTS_FIELD_NAME));
+            contact.setPhone(getString(cursor, ContactEntry.CONTACTS_FIELD_PHONE));
+            list.add(contact);
+        }
+    }
+
     @Override
     public List<Contact.ContactSimple> getSimpleContacts() {
         if(contactList == null) {
@@ -71,12 +80,7 @@ public class SimpleContactDatabase implements ContactAccessor{
                     ContactEntry.CONTACTS_FIELD_PHONE};
             Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, fields, null, null, null, null, null);
             contactList = new ArrayList<>();
-            while (cursor.moveToNext()) {
-                Contact.ContactSimple contact = new Contact.ContactSimple(cursor.getLong(0));
-                contact.setName(cursor.getString(1));
-                contact.setPhone(cursor.getString(2));
-                contactList.add(contact);
-            }
+            fillListSimple(contactList, cursor);
             cursor.close();
             db.close();
         }
@@ -86,8 +90,8 @@ public class SimpleContactDatabase implements ContactAccessor{
     @Override
     public Contact getContact(long id) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
-        Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, null,
-                "WHERE " + ContactEntry._ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+        Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, null, ContactEntry._ID + " = ?",
+                new String[]{String.valueOf(id)}, null, null, null);
         cursor.moveToFirst();
         Contact ret = new Contact(getId(cursor));
         ret.setPhone(getString(cursor, ContactEntry.CONTACTS_FIELD_PHONE));
@@ -113,7 +117,7 @@ public class SimpleContactDatabase implements ContactAccessor{
     @Override
     public void removeContact(long id) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
-        db.delete(ContactEntry.TABLE_CONTACTS, "WHERE " + ContactEntry._ID + " = ?",
+        db.delete(ContactEntry.TABLE_CONTACTS, ContactEntry._ID + " = ?",
                 new String[]{String.valueOf(id)});
         db.close();
         cacheRemove(id);
@@ -121,18 +125,20 @@ public class SimpleContactDatabase implements ContactAccessor{
 
     @Override
     public void removeContacts(List<Contact.ContactSimple> removal) {
-        SQLiteDatabase db = internalHelper.getReadableDatabase();
-        StringBuilder builder = new StringBuilder();
-        builder.append("DELETE FROM " + ContactEntry.TABLE_CONTACTS + " WHERE "
-                + ContactEntry._ID + " IN " + "(");
-        for (Contact.ContactSimple contact : removal) {
-            builder.append(String.valueOf(contact.getId()) + ",");
+        if(!removal.isEmpty()) {
+            SQLiteDatabase db = internalHelper.getReadableDatabase();
+            StringBuilder builder = new StringBuilder();
+            builder.append("DELETE FROM " + ContactEntry.TABLE_CONTACTS + ContactEntry._ID
+                    + " IN (");
+            for (Contact.ContactSimple contact : removal) {
+                builder.append(String.valueOf(contact.getId())).append(",");
+            }
+            builder.deleteCharAt(builder.length() - 1);   // remove last ','
+            builder.append(')');
+            db.execSQL(builder.toString());
+            db.close();
+            cacheRemove(removal);
         }
-        builder.deleteCharAt(builder.length()-1);   // remove last ','
-        builder.append(')');
-        db.execSQL(builder.toString());
-        db.close();
-        cacheRemove(removal);
     }
 
     private void cacheUpdate(Contact.ContactSimple newContact){
@@ -151,7 +157,7 @@ public class SimpleContactDatabase implements ContactAccessor{
         val.put(ContactEntry.CONTACTS_FIELD_PHONE, newContact.getPhone());
         val.put(ContactEntry.CONTACTS_FIELD_IMAGE, newContact.getImage());
 
-        db.update(ContactEntry.TABLE_CONTACTS, val, "WHERE " + ContactEntry._ID + " = ?",
+        db.update(ContactEntry.TABLE_CONTACTS, val, ContactEntry._ID + " = ?",
                 new String[] {String.valueOf(id)});
         db.close();
         cacheUpdate(new Contact.ContactSimple(id, newContact));
@@ -179,7 +185,15 @@ public class SimpleContactDatabase implements ContactAccessor{
 
     @Override
     public void invalidate() {
-        contactList = null;
-        getSimpleContacts();
+        // list = null, soo is not acceptable here because it is not an actual updating
+        SQLiteDatabase db = internalHelper.getReadableDatabase();
+        String fields[] = new String[]{ContactEntry._ID,
+                ContactEntry.CONTACTS_FIELD_NAME,
+                ContactEntry.CONTACTS_FIELD_PHONE};
+        Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, fields, null, null, null, null, null);
+        contactList.clear();
+        fillListSimple(contactList, cursor);
+        cursor.close();
+        db.close();
     }
 }

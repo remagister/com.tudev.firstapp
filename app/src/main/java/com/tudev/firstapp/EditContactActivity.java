@@ -5,17 +5,38 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tudev.firstapp.data.Contact;
-import com.tudev.firstapp.data.ContactAccessor;
 import com.tudev.firstapp.data.SQLContactHelper;
 import com.tudev.firstapp.data.SimpleContactDatabase;
 
 public class EditContactActivity extends AppCompatActivity {
 
-    Contact contact;
+    private Contact contact;
+    private EditText nameEditText;
+    private EditText emailEditText;
+    private EditText phoneEditText;
+
+    private void fillInfo(Contact contact){
+        // fill in data (possibly must be in presenter, but later)
+        nameEditText = (EditText) findViewById(R.id.nameEditText);
+        nameEditText.setText(contact.getName());
+        emailEditText = (EditText) findViewById(R.id.editEmailText);
+        emailEditText.setText(contact.getEmail());
+        phoneEditText = (EditText) findViewById(R.id.editPhoneText);
+        phoneEditText.setText(contact.getPhone());
+        // TODO: image setting routine
+    }
+
+    private Contact constructContact(long id){
+        Contact ret = new Contact(id);
+        ret.setName(nameEditText.getText().toString());
+        ret.setEmail(emailEditText.getText().toString());
+        ret.setPhone(phoneEditText.getText().toString());
+        // TODO: get image raw data
+        return ret;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,21 +46,18 @@ public class EditContactActivity extends AppCompatActivity {
         final ContactActionIntent editingIntent = (ContactActionIntent)
                 getIntent().getSerializableExtra(MainActivity.CONTACT_EDIT_INTENT_KEY);
         switch (editingIntent){
-            case CREATE: contact = new Contact(0);
+            case CREATE: {
+                contact = new Contact(0);
+                break;
+            }
             case UPDATE: {
                 Bundle extras = getIntent().getExtras();
                 contact = (Contact) extras.get(ContactActivity.CONTACT_BUNDLE_KEY);
+                break;
             }
         }
 
-        // fill in data (possibly must be in presenter, but later)
-        // TODO: image setting routine
-        final EditText nameEditText = (EditText)findViewById(R.id.nameEditText);
-        nameEditText.setText(contact.getName());
-        final EditText emailEditText = (EditText)findViewById(R.id.editEmailText);
-        emailEditText.setText(contact.getEmail());
-        final EditText phoneEditText = (EditText)findViewById(R.id.editPhoneText);
-        phoneEditText.setText(contact.getPhone());
+        fillInfo(contact);
 
         Button okButton = (Button) findViewById(R.id.buttonAcceptEdit);
         okButton.setOnClickListener(new View.OnClickListener() {
@@ -52,12 +70,20 @@ public class EditContactActivity extends AppCompatActivity {
                     SimpleContactDatabase db = new SimpleContactDatabase(
                             new SQLContactHelper(getApplicationContext())
                     );
+                    contact = constructContact(contact.getId());
                     switch (editingIntent){
-                        case UPDATE: db.updateContact(contact.getId(), contact);
-                        case CREATE: db.addContact(contact);
+                        case UPDATE: {
+                            db.updateContact(contact.getId(), contact);
+                            DBState.INSTANCE.setState(ContactDBState.MODIFIED.with(contact.getId()));
+                            break;
+                        }
+                        case CREATE: {
+                            db.addContact(contact);
+                            DBState.INSTANCE.setState(ContactDBState.MODIFIED.with(ContactDBState.NO_ID));
+                            break;
+                        }
                     }
-                    SimpleApplication app = (SimpleApplication) getApplication();
-                    app.setState(ContactDBState.MODIFIED);
+                    finish();
                 } else {
                     Toast.makeText(EditContactActivity.this, getText(R.string.field_empty_message),
                             Toast.LENGTH_SHORT).show();
