@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                         // TODO: start activity_edit view with CREATE param
                         Intent createIntent = new Intent(MainActivity.this, EditContactActivity.class);
                         createIntent.putExtra(CONTACT_EDIT_INTENT_KEY, ContactActionIntent.CREATE);
-                        MainActivity.this.startActivityForResult(createIntent,CONTACT_ACTIVITY_RCODE);
+                        MainActivity.this.startActivity(createIntent);
                     }
                     case REMOVE:{
                         SparseBooleanArray array = listView.getCheckedItemPositions();

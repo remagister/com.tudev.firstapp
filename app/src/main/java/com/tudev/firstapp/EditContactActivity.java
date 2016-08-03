@@ -56,6 +56,8 @@ public class EditContactActivity extends AppCompatActivity {
                         case UPDATE: db.updateContact(contact.getId(), contact);
                         case CREATE: db.addContact(contact);
                     }
+                    SimpleApplication app = (SimpleApplication) getApplication();
+                    app.setState(ContactDBState.MODIFIED);
                 } else {
                     Toast.makeText(EditContactActivity.this, getText(R.string.field_empty_message),
                             Toast.LENGTH_SHORT).show();

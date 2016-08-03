@@ -7,16 +7,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name="com.tudev.firstapp.SimpleApplication">
+        android:name=".SimpleApplication">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ContactActivity" />
-        <activity android:name=".EditContactActivity"></activity>
+        <activity android:name=".EditContactActivity" />
     </application>
 
 </manifest>
