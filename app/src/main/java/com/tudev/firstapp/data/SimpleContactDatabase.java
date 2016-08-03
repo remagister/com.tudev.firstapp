@@ -23,7 +23,6 @@ public class SimpleContactDatabase implements ContactAccessor{
     private SQLiteOpenHelper internalHelper;
     private List<Contact.ContactSimple> contactList;
 
-    private BaseAdapter adapterToNotify ;
 
     public SimpleContactDatabase(SQLiteOpenHelper helper){
         internalHelper = helper;
@@ -38,15 +37,6 @@ public class SimpleContactDatabase implements ContactAccessor{
 
     private byte[] getBytes(Cursor cursor, String field){
         return cursor.getBlob(cursor.getColumnIndex(field));
-    }
-
-    private void notifyAdapter(){
-        if(adapterToNotify != null) {
-            adapterToNotify.notifyDataSetChanged();
-        }
-    }
-    public void setAdapterToNotify(BaseAdapter adapterToNotify) {
-        this.adapterToNotify = adapterToNotify;
     }
 
 
@@ -111,14 +101,12 @@ public class SimpleContactDatabase implements ContactAccessor{
     private void cacheRemove(long id){
         if(contactList != null){
             contactList.remove(new Contact.ContactSimple(id));
-            notifyAdapter();
         }
     }
 
     private void cacheRemove(List<Contact.ContactSimple> removal){
         if(contactList != null){
             contactList.removeAll(removal);
-            notifyAdapter();
         }
     }
 
@@ -151,7 +139,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         if (contactList != null) {
             int index = contactList.indexOf(newContact);
             contactList.set(index, newContact);
-            notifyAdapter();
         }
     }
 
@@ -173,7 +160,6 @@ public class SimpleContactDatabase implements ContactAccessor{
     private void cacheAdd(Contact.ContactSimple contact){
         if (contactList != null) {
             contactList.add(contact);
-            notifyAdapter();
         }
     }
 
@@ -189,5 +175,11 @@ public class SimpleContactDatabase implements ContactAccessor{
         db.close();
 
         cacheAdd(new Contact.ContactSimple(id, contact));
+    }
+
+    @Override
+    public void invalidate() {
+        contactList = null;
+        getSimpleContacts();
     }
 }

@@ -79,7 +79,7 @@
         android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:text="@string/edit_button"
-        android:id="@+id/button2"
+        android:id="@+id/buttonEditContact"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 

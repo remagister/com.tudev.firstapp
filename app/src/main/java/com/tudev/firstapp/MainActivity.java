@@ -10,9 +10,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.tudev.firstapp.data.Contact;
 import com.tudev.firstapp.data.ContactAccessor;
@@ -33,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int CONTACT_ACTIVITY_RCODE = 1;
     public static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
 
-    ContactAccessor accessor;
+    private ContactAccessor accessor;
+    private BaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final ListView listView = (ListView) findViewById(R.id.listViewOne);
+        listView.setEmptyView(getLayoutInflater().inflate(R.layout.empty_view, listView));
         final Button actionButton = (Button) findViewById(R.id.listActionButton);
         accessor = new SimpleContactDatabase(new SQLContactHelper(getApplicationContext()));
-        final ContactAdapter adapter = new ContactAdapter(getLayoutInflater(), accessor.getSimpleContacts());
+        adapter = new ContactAdapter(getLayoutInflater(), accessor.getSimpleContacts());
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -90,10 +95,23 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         accessor.removeContacts(removeList);
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        // user re-enters activity here
+        SimpleApplication app = (SimpleApplication)getApplication();
+        if(app.getState() == ContactDBState.MODIFIED) {
+            accessor.invalidate();
+            adapter.notifyDataSetChanged();
+            app.setState(ContactDBState.INTACT);
+        }
+        super.onStart();
     }
 
     @Override
@@ -102,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             accessor.close();
         }catch (IOException ex){
-
+            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
