@@ -38,8 +38,7 @@ public class SimpleContactDatabase implements ContactAccessor{
     private byte[] getBytes(Cursor cursor, String field){
         return cursor.getBlob(cursor.getColumnIndex(field));
     }
-
-
+    
     @Override
     public void close() throws IOException {
         internalHelper.close();
