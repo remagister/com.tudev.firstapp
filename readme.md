@@ -1,9 +1,9 @@
-#Android Task
+#Android Task (contacts list)
 
-* Part 1 - ListView and Activities.
-* Part 2 - SQLite and activity interaction.
-* Part 2.1 - Moved to ubuntu OS.
-* [ ] List multiselection.
+* [x] Part 1 - ListView and Activities.
+* [x] Part 2 - SQLite and activity interaction.
+* [x] Part 2.1 - Moved to ubuntu OS.
+* [ ] List multiselection (with elements deletion).
 * [ ] Image caching, storing and processing. 
 
 ## Known issues:
