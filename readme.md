@@ -4,6 +4,7 @@
 * [x] Part 2 - SQLite and activity interaction.
 * [x] Part 2.1 - Moved to ubuntu OS.
 * [x] Part 2.2 - Data Layer remastered.
+* [x] Part 2.3 - MVP injected (not tested/debugged)
 * [ ] List multiselection (with elements deletion).
 * [ ] Image caching, storing and processing. 
 
