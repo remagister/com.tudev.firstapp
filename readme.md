@@ -3,6 +3,7 @@
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
 * [x] Part 2.1 - Moved to ubuntu OS.
+* [x] Part 2.2 - Data Layer remastered.
 * [ ] List multiselection (with elements deletion).
 * [ ] Image caching, storing and processing. 
 
