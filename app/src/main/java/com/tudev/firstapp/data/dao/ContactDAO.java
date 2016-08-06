@@ -14,7 +14,6 @@ import com.tudev.firstapp.data.sql.TableDefinition;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -42,17 +41,17 @@ public class ContactDAO implements IContactDAO {
         this.builder = builder;
         databaseDefinition = new DatabaseDefinition(DB_NAME)
             .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)
-                    .constraint(new FieldDefinition(ContactEntry._ID,
+                    .column(new FieldDefinition(ContactEntry._ID,
                             IFieldDefinition.FieldType.INTEGER,
                             EnumSet.of(IFieldDefinition.FieldModifier.PRIMARY_KEY,
                                     IFieldDefinition.FieldModifier.AUTOINCREMENT)))
-                .constraint(new FieldDefinition(ContactEntry.CONTACTS_FIELD_NAME,
+                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_NAME,
                         IFieldDefinition.FieldType.TEXT))
-                .constraint(new FieldDefinition(ContactEntry.CONTACTS_FIELD_EMAIL,
+                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_EMAIL,
                         IFieldDefinition.FieldType.TEXT))
-                .constraint(new FieldDefinition(ContactEntry.CONTACTS_FIELD_PHONE,
+                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_PHONE,
                         IFieldDefinition.FieldType.TEXT))
-                .constraint(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
+                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
                         IFieldDefinition.FieldType.TEXT)));
         helper = builder.build(databaseDefinition);
     }

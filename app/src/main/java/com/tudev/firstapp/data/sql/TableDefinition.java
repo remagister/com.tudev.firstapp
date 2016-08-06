@@ -19,7 +19,7 @@ public class TableDefinition extends DatabaseNamedItem implements ITableDefiniti
         super(itemName);
     }
 
-    public TableDefinition constraint(IFieldDefinition field){
+    public TableDefinition column(IFieldDefinition field){
         fields.add(field);
         return this;
     }

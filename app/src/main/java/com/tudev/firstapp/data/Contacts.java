@@ -1,6 +1,9 @@
 package com.tudev.firstapp.data;
 
 import com.tudev.firstapp.data.dao.Contact;
+import com.tudev.firstapp.data.dao.ContactDAO;
+import com.tudev.firstapp.data.dao.IContactDAO;
+import com.tudev.firstapp.data.helper.IHelperBuilder;
 
 import java.util.ArrayList;
 
@@ -9,40 +12,9 @@ import java.util.ArrayList;
  */
 
 public enum Contacts{
-    Instance;
+    INSTANCE;
 
-    private ArrayList<Contact> contactsList;
-    Contacts(){
-        contactsList = arrayToArrayList(new Contact[]{
-                Contact.createGmailContact("Alex"),
-                Contact.createGmailContact("Bill"),
-                Contact.createGmailContact("Tim"),
-                Contact.createGmailContact("Bob"),
-                Contact.createGmailContact("Alice"),
-                Contact.createGmailContact("Kate"),
-                Contact.createGmailContact("Tony"),
-                Contact.createGmailContact("Marlin"),
-                Contact.createGmailContact("Sam"),
-                Contact.createGmailContact("Eli"),
-                Contact.createGmailContact("Josh"),
-                Contact.createGmailContact("Ted"),
-                Contact.createGmailContact("Walter"),
-                Contact.createGmailContact("Steve"),
-                Contact.createGmailContact("Jack"),
-                Contact.createGmailContact("Peter"),
-                Contact.createGmailContact("Linus")
-        });
-    }
-
-    public ArrayList<Contact> getContacts(){
-        return contactsList;
-    }
-
-    private ArrayList<Contact> arrayToArrayList(Contact[] array){
-        ArrayList<Contact> ret = new ArrayList<>();
-        for (int i = 0; i < array.length; i++) {
-            ret.add(array[i]);
-        }
-        return ret;
+    public IContactDAO getContactsDAO(IHelperBuilder builder){
+        return new ContactDAO(builder);
     }
 }
