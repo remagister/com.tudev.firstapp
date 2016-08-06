@@ -1,12 +1,14 @@
 package com.tudev.firstapp.data;
 
-import static com.tudev.firstapp.data.ContactDataContract.ContactEntry;
+import static com.tudev.firstapp.data.dao.ContactDataContract.ContactEntry;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.BaseAdapter;
+
+import com.tudev.firstapp.data.dao.Contact;
+import com.tudev.firstapp.data.dao.IContactDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.List;
  * Created by Саша on 02.08.2016.
  */
 
-public class SimpleContactDatabase implements ContactAccessor{
+public class SimpleContactDatabase  {
 
     private SQLiteOpenHelper internalHelper;
     private List<Contact.ContactSimple> contactList;
@@ -39,12 +41,10 @@ public class SimpleContactDatabase implements ContactAccessor{
         return cursor.getBlob(cursor.getColumnIndex(field));
     }
     
-    @Override
     public void close() throws IOException {
         internalHelper.close();
     }
 
-    @Override
     public List<Contact> getAllContacts() {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
         Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, null, null, null, null, null, null);
@@ -70,7 +70,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         }
     }
 
-    @Override
     public List<Contact.ContactSimple> getSimpleContacts() {
         if(contactList == null) {
             SQLiteDatabase db = internalHelper.getReadableDatabase();
@@ -86,7 +85,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         return Collections.unmodifiableList(contactList);
     }
 
-    @Override
     public Contact getContact(long id) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
         Cursor cursor = db.query(ContactEntry.TABLE_CONTACTS, null, ContactEntry._ID + " = ?",
@@ -113,7 +111,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         }
     }
 
-    @Override
     public void removeContact(long id) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
         db.delete(ContactEntry.TABLE_CONTACTS, ContactEntry._ID + " = ?",
@@ -122,7 +119,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         cacheRemove(id);
     }
 
-    @Override
     public void removeContacts(List<Contact.ContactSimple> removal) {
         if(!removal.isEmpty()) {
             SQLiteDatabase db = internalHelper.getReadableDatabase();
@@ -147,7 +143,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         }
     }
 
-    @Override
     public void updateContact(long id, Contact newContact) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
         ContentValues val = new ContentValues();
@@ -168,7 +163,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         }
     }
 
-    @Override
     public void addContact(Contact contact) {
         SQLiteDatabase db = internalHelper.getReadableDatabase();
         ContentValues val = new ContentValues();
@@ -182,7 +176,6 @@ public class SimpleContactDatabase implements ContactAccessor{
         cacheAdd(new Contact.ContactSimple(id, contact));
     }
 
-    @Override
     public void invalidate() {
         // list = null, soo is not acceptable here because it is not an actual updating
         SQLiteDatabase db = internalHelper.getReadableDatabase();

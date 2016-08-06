@@ -1,4 +1,4 @@
-package com.tudev.firstapp.data;
+package com.tudev.firstapp.data.dao;
 
 import android.provider.BaseColumns;
 

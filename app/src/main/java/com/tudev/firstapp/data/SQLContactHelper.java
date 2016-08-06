@@ -3,7 +3,7 @@ package com.tudev.firstapp.data;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import static com.tudev.firstapp.data.ContactDataContract.ContactEntry;
+import static com.tudev.firstapp.data.dao.ContactDataContract.ContactEntry;
 /**
  * Created by Саша on 02.08.2016.
  */

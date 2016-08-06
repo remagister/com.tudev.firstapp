@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.tudev.firstapp.data.Contact;
+import com.tudev.firstapp.data.dao.Contact;
 
 import java.util.ArrayList;
 import java.util.List;

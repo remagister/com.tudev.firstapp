@@ -1,7 +1,6 @@
-package com.tudev.firstapp.data;
+package com.tudev.firstapp.data.dao;
 
 import java.io.Serializable;
-import java.io.StringReader;
 
 /**
  * Created by Саша on 26.07.2016.

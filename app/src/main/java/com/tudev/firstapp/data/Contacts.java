@@ -1,6 +1,6 @@
 package com.tudev.firstapp.data;
 
-import com.tudev.firstapp.data.Contact;
+import com.tudev.firstapp.data.dao.Contact;
 
 import java.util.ArrayList;
 

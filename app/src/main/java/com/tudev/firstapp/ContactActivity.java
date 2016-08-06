@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.tudev.firstapp.data.Contact;
+import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.data.SQLContactHelper;
 import com.tudev.firstapp.data.SimpleContactDatabase;
 

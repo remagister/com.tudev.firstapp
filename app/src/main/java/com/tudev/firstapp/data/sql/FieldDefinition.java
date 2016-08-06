@@ -1,16 +1,15 @@
 package com.tudev.firstapp.data.sql;
 
-import java.sql.Struct;
 import java.util.EnumSet;
 
 /**
  * Created by arseniy on 06.08.16.
  */
 
-public class FieldDefinition extends DatabaseItem implements FieldInfoCommand {
+public class FieldDefinition extends DatabaseNamedItem implements IFieldDefinition {
 
     private FieldType fieldType;
-    private EnumSet<FieldModifier> modifiers;
+    private EnumSet<FieldModifier> modifiers = EnumSet.noneOf(FieldModifier.class);
 
     public FieldDefinition(String itemName, FieldType fieldType) {
         super(itemName);

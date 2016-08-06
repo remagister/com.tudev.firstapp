@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.tudev.firstapp.data.Contact;
-import com.tudev.firstapp.data.ContactAccessor;
+import com.tudev.firstapp.data.dao.Contact;
+import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.SQLContactHelper;
 import com.tudev.firstapp.data.SimpleContactDatabase;
 
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int CONTACT_ACTIVITY_RCODE = 1;
     public static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
 
-    private ContactAccessor accessor;
+    private IContactDAO accessor;
     private BaseAdapter adapter;
 
     @Override
