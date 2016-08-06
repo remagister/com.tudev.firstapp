@@ -1,5 +1,7 @@
 package com.tudev.firstapp.data.dao;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -12,9 +14,6 @@ public class Contact implements Serializable, Comparable<Contact>{
     private String phone = "";
     private long id;
     private String image = "";
-    public static final Contact createGmailContact(String name){
-        return new Contact(name, name + "@gmail.com");
-    }
 
     public Contact(long id){
         this.id = id;
@@ -62,7 +61,7 @@ public class Contact implements Serializable, Comparable<Contact>{
     }
 
     @Override
-    public int compareTo(Contact contact) {
+    public int compareTo(@NonNull Contact contact) {
         long externalId = contact.getId();
         return id < externalId ? -1
                 : id == externalId ? 0
@@ -113,7 +112,7 @@ public class Contact implements Serializable, Comparable<Contact>{
         }
 
         @Override
-        public int compareTo(ContactSimple contactSimple) {
+        public int compareTo(@NonNull ContactSimple contactSimple) {
             long externalId = contactSimple.getId();
             return id < externalId ? -1
                     : id == externalId ? 0

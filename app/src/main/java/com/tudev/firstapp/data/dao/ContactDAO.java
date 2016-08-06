@@ -26,9 +26,8 @@ import static com.tudev.firstapp.data.dao.ContactDataContract.ContactEntry;
 
 public class ContactDAO implements IContactDAO {
 
-    public static final String DB_NAME = "contacts.db";
+    private static final String DB_NAME = "contacts.db";
 
-    private IHelperBuilder builder;
     private IDatabaseDefinition databaseDefinition;
 
     private SQLiteOpenHelper helper;
@@ -38,7 +37,6 @@ public class ContactDAO implements IContactDAO {
     private List<Contact.ContactSimple> contactList = new ArrayList<>();
 
     public ContactDAO(IHelperBuilder builder) {
-        this.builder = builder;
         databaseDefinition = new DatabaseDefinition(DB_NAME)
             .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)
                     .column(new FieldDefinition(ContactEntry._ID,
@@ -86,6 +84,7 @@ public class ContactDAO implements IContactDAO {
         if(writable != null){
             writable.close();
         }
+        helper.close();
     }
 
     private static long getId(Cursor cursor){

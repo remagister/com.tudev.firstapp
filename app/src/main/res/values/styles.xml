@@ -13,8 +13,4 @@
         <item name="android:text">@string/add_button</item>
     </style>
 
-    <style name="RemoveButtonStyle">
-        <item name="android:background">@android:color/holo_red_dark</item>
-        <item name="android:text">@string/remove_button</item>
-    </style>
 </resources>
