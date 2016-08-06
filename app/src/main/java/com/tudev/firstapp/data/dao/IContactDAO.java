@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Саша on 02.08.2016.
  */
 public interface IContactDAO extends Closeable {
-    IContactReader openReader();
-    IContactWriter openWriter();
+    IContactReader getReader();
+    IContactWriter getWriter();
     void invalidate();
 }

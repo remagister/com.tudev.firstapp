@@ -26,7 +26,7 @@ public class SQLiteHelperBuilder implements IHelperBuilder {
         return new SQLiteHelper(definition);
     }
 
-    public class SQLiteHelper extends SQLiteOpenHelper {
+    private class SQLiteHelper extends SQLiteOpenHelper {
 
         private IDatabaseDefinition definition;
 

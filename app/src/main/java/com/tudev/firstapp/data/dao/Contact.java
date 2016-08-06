@@ -11,7 +11,7 @@ public class Contact implements Serializable, Comparable<Contact>{
     private String email = "";
     private String phone = "";
     private long id;
-    private byte[] image;
+    private String image = "";
     public static final Contact createGmailContact(String name){
         return new Contact(name, name + "@gmail.com");
     }
@@ -54,11 +54,11 @@ public class Contact implements Serializable, Comparable<Contact>{
         return id;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
-    public void setImage(byte[] bytes){
-        image = bytes;
+    public void setImage(String ref){
+        image = ref;
     }
 
     @Override
@@ -70,8 +70,9 @@ public class Contact implements Serializable, Comparable<Contact>{
     }
 
     public static class ContactSimple implements Serializable, Comparable<ContactSimple>{
-        private String name;
-        private String phone;
+        private String name = "";
+        private String phone = "";
+        private String imageThumb = "";
         private long id;
 
         public ContactSimple(long id){
@@ -101,6 +102,14 @@ public class Contact implements Serializable, Comparable<Contact>{
 
         public long getId() {
             return id;
+        }
+
+        public String getImageThumb(){
+            return imageThumb;
+        }
+
+        public void setImageThumb(String imageThumb){
+            this.imageThumb = imageThumb;
         }
 
         @Override
