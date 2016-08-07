@@ -30,12 +30,7 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void onCreate(Context context) {
-        contacts = Contacts.INSTANCE.getDao();
-        if(contacts == null){
-            contacts = new ContactDAO(new SQLiteHelperBuilder(context));
-            Contacts.INSTANCE.setDao(contacts);
-        }
-
+        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context));
         parentView.setContactsList(contacts.getReader().getSimpleContacts());
     }
 
@@ -57,6 +52,7 @@ public class MainPresenter implements IMainPresenter {
     public void onDestroy() {
         try {
             contacts.close();
+            Contacts.INSTANCE.setDao(null);
         } catch (IOException e) {
             parentView.message(e.getMessage());
         }

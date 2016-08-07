@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.tudev.firstapp.data.helper.IHelperBuilder;
 import com.tudev.firstapp.data.sql.DatabaseDefinition;
@@ -57,6 +58,10 @@ public class ContactDAO implements IContactDAO {
     @Override
     public IContactReader getReader() {
         if(readable == null) {
+            if(writable != null){
+                writable.close();
+                writable = null;
+            }
             readable = helper.getReadableDatabase();
         }
         return new InternalReader(readable);
@@ -65,6 +70,10 @@ public class ContactDAO implements IContactDAO {
     @Override
     public IContactWriter getWriter() {
         if(writable == null) {
+            if(readable != null){
+                readable.close();
+                readable = null;
+            }
             writable = helper.getWritableDatabase();
         }
         return new InternalWriter(writable);
@@ -117,7 +126,10 @@ public class ContactDAO implements IContactDAO {
     }
     private void cacheUpdate(Contact.ContactSimple newContact){
         if (contactList != null) {
+            Log.d(getClass().getName(), "cache update: contact id " + newContact.getId());
+            Log.d(getClass().getName(), "cache update: list " + contactList.size());
             int index = contactList.indexOf(newContact);
+            Log.d(getClass().getName(), "cache update: index " + index);
             contactList.set(index, newContact);
         }
     }
@@ -172,6 +184,7 @@ public class ContactDAO implements IContactDAO {
             externalDb.update(ContactEntry.TABLE_CONTACTS, getValues(newContact),
                     ContactEntry._ID + " = ?",
                     new String[] {String.valueOf(id)});
+            Log.d(getClass().getName(), "Contact updated: " + newContact.toString());
             cacheUpdate(new Contact.ContactSimple(id, newContact));
         }
 
@@ -220,11 +233,10 @@ public class ContactDAO implements IContactDAO {
                         ContactEntry.CONTACTS_FIELD_IMAGE};
                 Cursor cursor = externalDb.query(ContactEntry.TABLE_CONTACTS,
                         fields, null, null, null, null, null);
-                contactList = new ArrayList<>();
                 fillListSimple(contactList, cursor);
                 cursor.close();
             }
-            return Collections.unmodifiableList(contactList);
+            return contactList;
         }
 
         @Override

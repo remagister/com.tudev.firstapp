@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
@@ -30,11 +31,7 @@ public class EditPresenter implements IEditPresenter {
     @Override
     public void onCreate(Context context) {
         this.context = context;
-        contacts = Contacts.INSTANCE.getDao();
-        if(contacts == null){
-            contacts = new ContactDAO(new SQLiteHelperBuilder(context.getApplicationContext()));
-            Contacts.INSTANCE.setDao(contacts);
-        }
+        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context.getApplicationContext()));
         Intent intent = ((Activity) context ).getIntent();
         editingIntent = (ContactActionIntent) intent
                 .getSerializableExtra(MainPresenter.CONTACT_EDIT_INTENT_KEY);
@@ -69,6 +66,7 @@ public class EditPresenter implements IEditPresenter {
 
     @Override
     public void acceptButtonClick() {
+        Log.d(getClass().getName(), contact.toString());
         contact = parentView.extractData(contact.getId());
         if(parentView.validate()) {
             switch (editingIntent) {

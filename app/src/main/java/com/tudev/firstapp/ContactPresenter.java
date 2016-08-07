@@ -37,11 +37,8 @@ public class ContactPresenter implements IContactPresenter {
             contact = new Contact(undefined, undefined);
         }
         parentView.setContact(contact);
-        contacts = Contacts.INSTANCE.getDao();
-        if(contacts == null){
-            contacts = new ContactDAO(new SQLiteHelperBuilder(context));
-            Contacts.INSTANCE.setDao(contacts);
-        }
+        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context
+            .getApplicationContext()));
     }
 
     @Override

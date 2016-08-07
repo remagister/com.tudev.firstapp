@@ -1,10 +1,13 @@
 #Android Task (contacts list)
 
+Current branch - 'mvp'
+
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
 * [x] Part 2.1 - Moved to ubuntu OS.
 * [x] Part 2.2 - Data Layer remastered.
-* [x] Part 2.3 - MVP injected (not tested/debugged)
+* [x] Part 2.3 - MVP injected (not tested/debugged).
+* [x] Part 2.4 - MVP debugged.
 * [ ] List multiselection (with elements deletion).
 * [ ] Image caching, storing and processing. 
 

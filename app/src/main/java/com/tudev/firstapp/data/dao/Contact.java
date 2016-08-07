@@ -68,7 +68,16 @@ public class Contact implements Serializable, Comparable<Contact>{
                 : 1;
     }
 
-    public static class ContactSimple implements Serializable, Comparable<ContactSimple>{
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("ID: ").append(id)
+                .append(name).append(", ")
+                .append(email).append(", ");
+        return builder.toString();
+    }
+
+    public static class ContactSimple implements Serializable{
         private String name = "";
         private String phone = "";
         private String imageThumb = "";
@@ -81,6 +90,7 @@ public class Contact implements Serializable, Comparable<Contact>{
             this(id);
             name = contact.name;
             phone = contact.phone;
+            imageThumb = contact.image;
         }
 
         public String getName() {
@@ -112,11 +122,13 @@ public class Contact implements Serializable, Comparable<Contact>{
         }
 
         @Override
-        public int compareTo(@NonNull ContactSimple contactSimple) {
-            long externalId = contactSimple.getId();
-            return id < externalId ? -1
-                    : id == externalId ? 0
-                    : 1;
+        public boolean equals(Object obj) {
+            return !(obj == null || !(obj instanceof ContactSimple)) && hashCode() == obj.hashCode();
+        }
+
+        @Override
+        public int hashCode() {
+            return (int)id;
         }
     }
 }

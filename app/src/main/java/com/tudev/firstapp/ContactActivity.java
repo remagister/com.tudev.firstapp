@@ -20,17 +20,18 @@ public class ContactActivity extends ViewBase implements IContactView {
     public static final String CONTACT_BUNDLE_KEY = "CONTACT_BUNDLE_KEY";
 
     private IContactPresenter presenter;
-    @BindView(R.id.contactTextName) private TextView nameTextView;
-    @BindView(R.id.contactTextEmail) private TextView emailTextView;
-    @BindView(R.id.contactPhoneLabel) private TextView phoneTextView; // FIXME: 03.08.2016 rename label
+    @BindView(R.id.contactTextName) TextView nameTextView;
+    @BindView(R.id.contactTextEmail) TextView emailTextView;
+    @BindView(R.id.contactPhoneLabel) TextView phoneTextView; // FIXME: 03.08.2016 rename label
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new ContactPresenter(this);
-        presenter.onCreate(this);
         setContentView(R.layout.activity_contact);
         ButterKnife.bind(this);
+
+        presenter = new ContactPresenter(this);
+        presenter.onCreate(this);
 
         Button button = (Button) findViewById(R.id.buttonEditContact);
         button.setOnClickListener(new View.OnClickListener() {

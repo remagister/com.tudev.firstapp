@@ -1,7 +1,9 @@
 package com.tudev.firstapp.data;
 
 import com.tudev.firstapp.ContactDBState;
+import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
+import com.tudev.firstapp.data.helper.IHelperBuilder;
 
 import java.util.ArrayList;
 
@@ -18,7 +20,10 @@ public enum Contacts{
         this.dao = dao;
     }
 
-    public IContactDAO getDao(){
+    public IContactDAO getDao(IHelperBuilder builder){
+        if (dao == null) {
+            dao = new ContactDAO(builder);
+        }
         return dao;
     }
 

@@ -20,10 +20,10 @@ import butterknife.ButterKnife;
 public class EditContactActivity extends ViewBase implements IEditView {
 
     private IEditPresenter presenter;
-    @BindView(R.id.nameEditText) private EditText nameEditText;
-    @BindView(R.id.editEmailText) private EditText emailEditText;
-    @BindView(R.id.editPhoneText) private EditText phoneEditText;
-    @BindView(R.id.buttonAcceptEdit) private Button okButton;
+    @BindView(R.id.nameEditText) EditText nameEditText;
+    @BindView(R.id.editEmailText) EditText emailEditText;
+    @BindView(R.id.editPhoneText) EditText phoneEditText;
+    @BindView(R.id.buttonAcceptEdit) Button okButton;
 
 
     @Override
@@ -33,7 +33,7 @@ public class EditContactActivity extends ViewBase implements IEditView {
         ButterKnife.bind(this);
 
         presenter = new EditPresenter(this);
-        presenter.onCreate(getApplicationContext());
+        presenter.onCreate(this);
 
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override

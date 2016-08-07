@@ -55,7 +55,7 @@ public class TableDefinition extends DatabaseNamedItem implements ITableDefiniti
         for(IFieldDefinition f : fields){
             ret.append(f.getDefinition()).append(" , ");
         }
-        ret.deleteCharAt(ret.length()-1).append(')');
+        ret.deleteCharAt(ret.length()-2).append(')');
         return ret.toString();
     }
 
