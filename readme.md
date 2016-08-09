@@ -15,5 +15,5 @@ Current branch - 'mvp'
 
 1. Main list does not update properly on main activity resume.
 2. PAUSE GC is thrown all the time.
-~~3. Main list multiple choice mode does not work :<~~
-3. Main list can be multiselected, but cannot return to normal mode.
+3. ~~Main list multiple choice mode does not work :<~~
+4. Main list can be multiselected, but cannot return to normal mode.
