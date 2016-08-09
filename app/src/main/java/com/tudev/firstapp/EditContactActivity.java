@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.tudev.firstapp.data.Contacts;
@@ -19,12 +20,14 @@ import butterknife.ButterKnife;
 
 public class EditContactActivity extends ViewBase implements IEditView {
 
+    public static final int PICK_IMAGE_CODE = 1;
+
     private IEditPresenter presenter;
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
     @BindView(R.id.editPhoneText) EditText phoneEditText;
     @BindView(R.id.buttonAcceptEdit) Button okButton;
-
+    @BindView(R.id.editImageView) ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,30 @@ public class EditContactActivity extends ViewBase implements IEditView {
             }
         });
 
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(getIntent,
+                        getString(R.string.selectImageTitle));
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+                startActivityForResult(chooserIntent, PICK_IMAGE_CODE);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // TODO: GET IMAGE
     }
 
     @Override

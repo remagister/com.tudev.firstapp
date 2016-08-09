@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView2"
+        android:id="@+id/editImageView"
         android:src="@android:drawable/ic_menu_report_image"
         android:minHeight="160dp"
         android:minWidth="160dp"
@@ -21,7 +21,8 @@
         android:cropToPadding="false"
         android:padding="1dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/editImageView_descr" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/image_change_text"
         android:id="@+id/textView"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/editImageView"
         android:layout_centerHorizontal="true" />
 
     <TextView

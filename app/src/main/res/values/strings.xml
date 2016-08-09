@@ -13,4 +13,6 @@
     <string name="phone_hint">Type phone here</string>
     <string name="accept_button">Accept</string>
     <string name="field_empty_message">One of fields is not filled. Check it.</string>
+    <string name="editImageView_descr">Contact image</string>
+    <string name="selectImageTitle">Select Image</string>
 </resources>

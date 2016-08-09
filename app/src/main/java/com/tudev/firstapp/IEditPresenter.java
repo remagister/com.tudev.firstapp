@@ -10,4 +10,6 @@ import com.tudev.firstapp.presenter.IPresenter;
 public interface IEditPresenter extends IPresenter {
 
     void acceptButtonClick();
+
+    void onImageReceived();
 }

@@ -143,7 +143,7 @@ public class ContactDAO implements IContactDAO {
 
         private SQLiteDatabase externalDb;
 
-        public InternalWriter(SQLiteDatabase db) {
+        private InternalWriter(SQLiteDatabase db) {
             externalDb = db;
         }
 
@@ -158,7 +158,7 @@ public class ContactDAO implements IContactDAO {
         public void removeContacts(List<Contact.ContactSimple> removal) {
             if(!removal.isEmpty()) {
                 StringBuilder builder = new StringBuilder();
-                builder.append("DELETE FROM " + ContactEntry.TABLE_CONTACTS + ContactEntry._ID
+                builder.append("DELETE FROM " + ContactEntry.TABLE_CONTACTS + " WHERE " + ContactEntry._ID
                         + " IN (");
                 for (Contact.ContactSimple contact : removal) {
                     builder.append(String.valueOf(contact.getId())).append(",");
@@ -167,6 +167,7 @@ public class ContactDAO implements IContactDAO {
                 builder.append(')');
                 externalDb.execSQL(builder.toString());
                 cacheRemove(removal);
+                Log.d("DAO/removeContacts", "CONTACTS_LIST_OBJ " + contactList.hashCode());
             }
         }
 
@@ -199,7 +200,7 @@ public class ContactDAO implements IContactDAO {
 
         private SQLiteDatabase externalDb;
 
-        public InternalReader(SQLiteDatabase db) {
+        private InternalReader(SQLiteDatabase db) {
             externalDb = db;
         }
 

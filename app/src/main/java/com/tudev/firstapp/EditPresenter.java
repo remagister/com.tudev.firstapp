@@ -66,7 +66,6 @@ public class EditPresenter implements IEditPresenter {
 
     @Override
     public void acceptButtonClick() {
-        Log.d(getClass().getName(), contact.toString());
         contact = parentView.extractData(contact.getId());
         if(parentView.validate()) {
             switch (editingIntent) {
@@ -85,5 +84,10 @@ public class EditPresenter implements IEditPresenter {
         } else {
             parentView.message(context.getString(R.string.field_empty_message));
         }
+    }
+
+    @Override
+    public void onImageReceived() {
+
     }
 }
