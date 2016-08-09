@@ -8,11 +8,12 @@ Current branch - 'mvp'
 * [x] Part 2.2 - Data Layer remastered.
 * [x] Part 2.3 - MVP injected (not tested/debugged).
 * [x] Part 2.4 - MVP debugged.
-* [ ] List multiselection (with elements deletion).
+* [x] Part 3 - List multiselection (with elements deletion).
 * [ ] Image caching, storing and processing. 
 
 ## Known issues:
 
 1. Main list does not update properly on main activity resume.
 2. PAUSE GC is thrown all the time.
-3. Main list multiple choice mode does not work :<
+~~3. Main list multiple choice mode does not work :<~~
+3. Main list can be multiselected, but cannot return to normal mode.
