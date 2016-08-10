@@ -15,6 +15,7 @@ public interface IView {
     void goToActivity(Intent intent);
 
     void message(String message);
+    void message(int string_id);
 
     Intent createIntent(Class<?> activity);
 

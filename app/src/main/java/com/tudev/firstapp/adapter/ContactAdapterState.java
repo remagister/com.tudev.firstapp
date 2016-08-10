@@ -5,5 +5,7 @@ package com.tudev.firstapp.adapter;
  */
 
 public enum ContactAdapterState {
-    NORMAL, SELECTION
+    NORMAL, SELECTION;
+
+    public static final String STATE_KEY = "STATE_KEY";
 }

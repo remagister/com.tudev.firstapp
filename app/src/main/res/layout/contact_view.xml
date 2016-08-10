@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.tudev.firstapp.CheckableTableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.tudev.firstapp.layout.CheckableTableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
@@ -46,7 +46,8 @@
                 android:layout_gravity="center"
                 android:clickable="false"
                 android:focusable="false"
+                android:saveEnabled="true"
                 android:focusableInTouchMode="false"/>
     </TableRow>
 
-</com.tudev.firstapp.CheckableTableLayout>
+</com.tudev.firstapp.layout.CheckableTableLayout>

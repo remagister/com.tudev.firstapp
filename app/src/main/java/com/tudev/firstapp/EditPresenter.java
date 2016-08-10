@@ -11,27 +11,23 @@ import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.helper.SQLiteHelperBuilder;
+import com.tudev.firstapp.presenter.ContactPresenterBase;
 
 /**
  * Created by arseniy on 07.08.16.
  */
 
-public class EditPresenter implements IEditPresenter {
+public class EditPresenter extends ContactPresenterBase<IEditView> implements IEditPresenter {
 
-    private IEditView parentView;
-    private IContactDAO contacts;
     private ContactActionIntent editingIntent;
-    private Context context;
     private Contact contact;
 
     public EditPresenter(IEditView parentView) {
-        this.parentView = parentView;
+        super(parentView);
     }
 
     @Override
     public void onCreate(Context context) {
-        this.context = context;
-        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context.getApplicationContext()));
         Intent intent = ((Activity) context ).getIntent();
         editingIntent = (ContactActionIntent) intent
                 .getSerializableExtra(MainPresenter.CONTACT_EDIT_INTENT_KEY);
@@ -46,48 +42,38 @@ public class EditPresenter implements IEditPresenter {
                 break;
             }
         }
-        parentView.setContact(contact);
     }
 
     @Override
-    public void onPause() {
-
-    }
-
-    @Override
-    public void onResume() {
-
-    }
-
-    @Override
-    public void onDestroy() {
-
+    public void initialize() {
+        getParentView().setContact(contact);
     }
 
     @Override
     public void acceptButtonClick() {
-        contact = parentView.extractData(contact.getId());
-        if(parentView.validate()) {
+        IEditView view = getParentView();
+        contact = view.extractData(contact.getId());
+        if(view.validate()) {
             switch (editingIntent) {
                 case UPDATE: {
-                    contacts.getWriter().updateContact(contact.getId(), contact);
+                    getWriter().updateContact(contact.getId(), contact);
                     Contacts.INSTANCE.setState(ContactDBState.MODIFIED.with(contact.getId()));
                     break;
                 }
                 case CREATE: {
-                    contacts.getWriter().addContact(contact);
+                    getWriter().addContact(contact);
                     Contacts.INSTANCE.setState(ContactDBState.MODIFIED.with(ContactDBState.NO_ID));
                     break;
                 }
             }
-            parentView.goToActivity(null);
+            view.goToActivity(null);
         } else {
-            parentView.message(context.getString(R.string.field_empty_message));
+            view.message(R.string.field_empty_message);
         }
     }
 
     @Override
     public void onImageReceived() {
-
+        // TODO: 10.08.16 ON IMAGE RECEIVED IMPLEMENTATION
     }
 }

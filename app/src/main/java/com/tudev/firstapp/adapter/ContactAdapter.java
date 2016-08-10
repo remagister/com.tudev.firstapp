@@ -25,7 +25,11 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
     private List<Contact.ContactSimple> internalContacts;
 
     public ContactAdapter(LayoutInflater infl, List<Contact.ContactSimple> contacts){
-        super(ContactAdapterState.NORMAL, infl);
+        this(infl, contacts, ContactAdapterState.NORMAL);
+    }
+
+    public ContactAdapter(LayoutInflater inflater, List<Contact.ContactSimple> contacts, ContactAdapterState state){
+        super(state, inflater);
         internalContacts = new ArrayList<>();
         internalContacts.addAll(contacts);
     }

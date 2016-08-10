@@ -18,11 +18,7 @@ import java.util.EnumSet;
 public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implements IStateChangedListener<T>{
 
     private T state;
-    private T initial;
 
-    private static final int MAX_SIZE = 16;  // 2 int doubled
-    private static final int CACHE_CODE = 0xDEAD;
-    private LruCache<Integer, T> cache;
 
     private LayoutInflater internalInflater;
 
@@ -32,12 +28,7 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
 
     public StateAdapter(T initial, LayoutInflater inflater){
         internalInflater = inflater;
-        this.initial = initial;
-        cache = new LruCache<>(MAX_SIZE);
-        state = cache.get(CACHE_CODE);
-        if (state == null) {
-            state = initial;
-        }
+        this.state = initial;
     }
 
     protected LayoutInflater getInternalInflater() {
@@ -48,9 +39,6 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
         this.internalInflater = internalInflater;
     }
 
-    public void onDestroy(){
-        cache.put(CACHE_CODE, state);
-    }
 
     protected abstract View getViewState(int i, View view, ViewGroup group, T state);
 
@@ -66,5 +54,6 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
     @Override
     public void stateChanged(T newState) {
         state = newState;
+        super.notifyDataSetInvalidated();
     }
 }

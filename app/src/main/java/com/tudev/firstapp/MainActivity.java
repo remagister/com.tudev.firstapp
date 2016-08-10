@@ -13,6 +13,7 @@ import android.widget.ListView;
 import com.tudev.firstapp.adapter.ContactAdapter;
 import com.tudev.firstapp.adapter.ContactAdapterState;
 import com.tudev.firstapp.adapter.StateAdapter;
+import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.ViewBase;
 
@@ -22,35 +23,94 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends ViewBase implements IMainView {
+public class MainActivity extends ViewBase<IMainPresenter> implements IMainView {
+
+
+    private class ItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            getPresenter().itemClicked((Contact.ContactSimple) adapterView.getItemAtPosition(i));
+        }
+    }
+
+    private class ItemLongClickListener implements AdapterView.OnItemLongClickListener{
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if(adapter.getState() == ContactAdapterState.SELECTION){
+                return false;
+            }
+            getPresenter().onItemLongClick();
+            listView.setItemChecked(i, true);
+            return true;
+        }
+    }
 
     private AdapterView.OnItemLongClickListener longClickListener = new ItemLongClickListener();
     private AdapterView.OnItemClickListener itemClickListener = new ItemClickListener();
     private StateAdapter<ContactAdapterState> adapter;
-    private IMainPresenter presenter;
     @BindView(R.id.listViewOne) ListView listView;
     @BindView(R.id.listActionButton) Button actionButton;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    public IMainPresenter onPresenterCreate() {
+        return new MainPresenter(this);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new MainPresenter(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        presenter.onCreate(getApplicationContext());
-        listView.setOnItemClickListener(itemClickListener);
-
-        actionButton.setTag(AddButtonIntent.ADD);
-
-        listView.setOnItemLongClickListener(longClickListener);
-
+        if(savedInstanceState != null){
+            getPresenter().restore(savedInstanceState);
+        }
+        initializePresenter();
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.buttonClicked((AddButtonIntent) actionButton.getTag());
+                getPresenter().buttonClicked((AddButtonIntent) actionButton.getTag());
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(adapter.getState() == ContactAdapterState.SELECTION){
+            // deselect all
+            for(int i=0; i<adapter.getCount(); ++i){
+                listView.setItemChecked(i, false);
+            }
+            getPresenter().onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public void initState(ContactAdapterState state){
+        setSelectionMode(state);
+        if (state == ContactAdapterState.NORMAL) {
+            listView.setOnItemClickListener(itemClickListener);
+            listView.setOnItemLongClickListener(longClickListener);
+        }
+        else{
+            listView.setOnItemClickListener(null);
+            listView.setOnItemLongClickListener(null);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getPresenter().saveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        getPresenter().restore(savedInstanceState);
     }
 
     void setButtonState(ContactAdapterState state){
@@ -72,41 +132,10 @@ public class MainActivity extends ViewBase implements IMainView {
         }
     }
 
-    private class ItemClickListener implements AdapterView.OnItemClickListener{
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            presenter.itemClicked((Contact.ContactSimple) adapterView.getItemAtPosition(i));
-        }
-    }
-
-    private class ItemLongClickListener implements AdapterView.OnItemLongClickListener{
-
-        @Override
-        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if(adapter.getState() == ContactAdapterState.SELECTION){
-                return false;
-            }
-            listView.setOnItemClickListener(null);
-            ((Checkable) view).setChecked(true);
-            adapter.stateChanged(ContactAdapterState.SELECTION);
-            setButtonState(ContactAdapterState.SELECTION);
-            adapter.notifyDataSetInvalidated();
-            return true;
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // user re-enters activity here
-        presenter.onResume();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        presenter.onDestroy();
+    private void setSelectionMode(ContactAdapterState state){
+        setButtonState(state);
+        adapter.stateChanged(state);
+        adapter.notifyDataSetInvalidated();
     }
 
     @Override
@@ -117,11 +146,10 @@ public class MainActivity extends ViewBase implements IMainView {
 
     @Override
     public void notifyDataChanged() {
-        setButtonState(ContactAdapterState.NORMAL);
-        adapter.stateChanged(ContactAdapterState.NORMAL);
-        adapter.notifyDataSetInvalidated();
-
+        initState(ContactAdapterState.NORMAL);
     }
+
+
 
     @Override
     public List<Contact.ContactSimple> getRemoveList() {

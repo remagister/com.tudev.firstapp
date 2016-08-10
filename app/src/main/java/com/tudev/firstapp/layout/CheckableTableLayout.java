@@ -1,4 +1,4 @@
-package com.tudev.firstapp;
+package com.tudev.firstapp.layout;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,8 @@ import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.TableLayout;
+
+import com.tudev.firstapp.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

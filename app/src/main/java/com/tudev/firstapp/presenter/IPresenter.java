@@ -8,7 +8,9 @@ import android.content.Context;
 
 public interface IPresenter {
     void onCreate(Context context);
-    void onPause();
-    void onResume();
+    void onStop();
+    void onStart();
     void onDestroy();
+
+    void initialize();
 }

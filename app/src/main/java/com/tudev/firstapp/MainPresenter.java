@@ -1,76 +1,71 @@
 package com.tudev.firstapp;
 
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 
+import com.tudev.firstapp.adapter.ContactAdapterState;
 import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
-import com.tudev.firstapp.data.dao.ContactDAO;
-import com.tudev.firstapp.data.dao.IContactDAO;
-import com.tudev.firstapp.data.helper.SQLiteHelperBuilder;
+import com.tudev.firstapp.presenter.ContactPresenterBase;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
  * Created by arseniy on 06.08.16.
  */
 
-public class MainPresenter implements IMainPresenter {
+public class MainPresenter extends ContactPresenterBase<IMainView> implements IMainPresenter {
 
-    public static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
+    static final String CONTACT_EDIT_INTENT_KEY = "CONTACT_EDIT_INTENT_KEY";
 
-    private IContactDAO contacts;
-    private IMainView parentView;
+    private ContactAdapterState state = ContactAdapterState.NORMAL;
 
-    public MainPresenter(IMainView parentView) {
-        this.parentView = parentView;
-    }
-
-
-    @Override
-    public void onCreate(Context context) {
-        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context));
-        parentView.setContactsList(contacts.getReader().getSimpleContacts());
+    // disposal needed
+    MainPresenter(IMainView parentView) {
+        super(parentView, true);
     }
 
     @Override
-    public void onPause() {
-
+    public void restore(Bundle saved) {
+        state = (ContactAdapterState) saved.getSerializable(ContactAdapterState.STATE_KEY);
     }
 
     @Override
-    public void onResume() {
+    public void initialize() {
+        IMainView view = getParentView();
+        view.setContactsList(getReader().getSimpleContacts());
+        view.initState(state);
+    }
+
+    @Override
+    public void onStart() {
         if(Contacts.INSTANCE.getState() == ContactDBState.MODIFIED) {
-            contacts.invalidate();
-            parentView.notifyDataChanged();
+            getDAO().invalidate();
+            getParentView().notifyDataChanged();
             Contacts.INSTANCE.reset();
         }
     }
 
+
     @Override
-    public void onDestroy() {
-        try {
-            contacts.close();
-            Contacts.INSTANCE.setDao(null);
-        } catch (IOException e) {
-            parentView.message(e.getMessage());
-        }
+    public void saveInstanceState(Bundle bundle) {
+        bundle.putSerializable(ContactAdapterState.STATE_KEY, state);
     }
 
     @Override
     public void buttonClicked(AddButtonIntent state) {
+        IMainView view = getParentView();
         switch (state){
             case ADD:{
-                Intent createIntent = parentView.createIntent(EditContactActivity.class);
+                Intent createIntent = view.createIntent(EditContactActivity.class);
                 createIntent.putExtra(CONTACT_EDIT_INTENT_KEY, ContactActionIntent.CREATE);
-                parentView.goToActivity(createIntent);
+                view.goToActivity(createIntent);
                 break;
             }
             case REMOVE:{
-                List<Contact.ContactSimple> removeList = parentView.getRemoveList();
-                contacts.getWriter().removeContacts(removeList);
-                parentView.notifyDataChanged();
+                List<Contact.ContactSimple> removeList = view.getRemoveList();
+                getWriter().removeContacts(removeList);
+                view.notifyDataChanged();
                 break;
             }
         }
@@ -78,9 +73,24 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void itemClicked(Contact.ContactSimple contactSimple) {
-        Intent intent = parentView.createIntent(ContactActivity.class);
-        Contact toSend = contacts.getReader().getContact(contactSimple.getId());
+        IMainView view = getParentView();
+        Intent intent = view.createIntent(ContactActivity.class);
+        Contact toSend = getReader().getContact(contactSimple.getId());
         intent.putExtra(ContactActivity.CONTACT_BUNDLE_KEY, toSend);
-        parentView.goToActivity(intent);
+        view.goToActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick() {
+        state = ContactAdapterState.SELECTION;
+        getParentView().initState(state);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(state == ContactAdapterState.SELECTION) {
+            state = ContactAdapterState.NORMAL;
+            getParentView().initState(state);
+        }
     }
 }

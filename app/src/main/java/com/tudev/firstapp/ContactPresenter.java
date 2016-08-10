@@ -10,19 +10,18 @@ import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.helper.SQLiteHelperBuilder;
+import com.tudev.firstapp.presenter.ContactPresenterBase;
 
 /**
  * Created by arseniy on 07.08.16.
  */
 
-public class ContactPresenter implements IContactPresenter {
+public class ContactPresenter extends ContactPresenterBase<IContactView> implements IContactPresenter {
 
-    private IContactView parentView;
     private Contact contact;
-    private IContactDAO contacts;
 
     public ContactPresenter(IContactView view) {
-        parentView = view;
+        super(view);
     }
 
     @Override
@@ -36,34 +35,26 @@ public class ContactPresenter implements IContactPresenter {
             String undefined = context.getString(R.string.undefined_contact);
             contact = new Contact(undefined, undefined);
         }
-        parentView.setContact(contact);
-        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(context
-            .getApplicationContext()));
     }
 
     @Override
-    public void onPause() {
-
+    public void initialize() {
+        getParentView().setContact(contact);
     }
 
     @Override
-    public void onResume() {
+    public void onStart() {
         if(Contacts.INSTANCE.getState().hasId()) {
-            contact = contacts.getReader().getContact(Contacts.INSTANCE.getState().getId());
-            parentView.setContact(contact);
+            contact = getReader().getContact(Contacts.INSTANCE.getState().getId());
+            getParentView().setContact(contact);
         }
     }
 
     @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
     public void onEditButtonClick() {
-        Intent intent = parentView.createIntent(EditContactActivity.class);
+        Intent intent = getParentView().createIntent(EditContactActivity.class);
         intent.putExtra(ContactActivity.CONTACT_BUNDLE_KEY, contact);
         intent.putExtra(MainPresenter.CONTACT_EDIT_INTENT_KEY, ContactActionIntent.UPDATE);
-        parentView.goToActivity(intent);
+        getParentView().goToActivity(intent);
     }
 }

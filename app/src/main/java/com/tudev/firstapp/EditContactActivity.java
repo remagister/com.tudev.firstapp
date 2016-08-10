@@ -18,11 +18,10 @@ import com.tudev.firstapp.view.ViewBase;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditContactActivity extends ViewBase implements IEditView {
+public class EditContactActivity extends ViewBase<IEditPresenter> implements IEditView {
 
     public static final int PICK_IMAGE_CODE = 1;
 
-    private IEditPresenter presenter;
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
     @BindView(R.id.editPhoneText) EditText phoneEditText;
@@ -30,19 +29,22 @@ public class EditContactActivity extends ViewBase implements IEditView {
     @BindView(R.id.editImageView) ImageView imageView;
 
     @Override
+    public IEditPresenter onPresenterCreate() {
+        return new EditPresenter(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_contact);
         ButterKnife.bind(this);
 
-        presenter = new EditPresenter(this);
-        presenter.onCreate(this);
-
+        initializePresenter();
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO: check validity and accept changes
-                presenter.acceptButtonClick();
+                getPresenter().acceptButtonClick();
             }
         });
 

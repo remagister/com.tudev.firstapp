@@ -1,28 +1,29 @@
 package com.tudev.firstapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
-import com.tudev.firstapp.data.SQLContactHelper;
-import com.tudev.firstapp.data.SimpleContactDatabase;
 import com.tudev.firstapp.view.ViewBase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ContactActivity extends ViewBase implements IContactView {
+public class ContactActivity extends ViewBase<IContactPresenter> implements IContactView {
 
     public static final String CONTACT_BUNDLE_KEY = "CONTACT_BUNDLE_KEY";
 
-    private IContactPresenter presenter;
     @BindView(R.id.contactTextName) TextView nameTextView;
     @BindView(R.id.contactTextEmail) TextView emailTextView;
     @BindView(R.id.contactPhoneLabel) TextView phoneTextView; // FIXME: 03.08.2016 rename label
+    @BindView(R.id.buttonEditContact) Button buttonEdit;
+
+    @Override
+    public IContactPresenter onPresenterCreate() {
+        return new ContactPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,24 +31,14 @@ public class ContactActivity extends ViewBase implements IContactView {
         setContentView(R.layout.activity_contact);
         ButterKnife.bind(this);
 
-        presenter = new ContactPresenter(this);
-        presenter.onCreate(this);
-
-        Button button = (Button) findViewById(R.id.buttonEditContact);
-        button.setOnClickListener(new View.OnClickListener() {
+        initializePresenter();
+        buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.onEditButtonClick();
+                getPresenter().onEditButtonClick();
             }
         });
     }
-
-    @Override
-    protected void onResume() {
-        presenter.onResume();
-        super.onResume();
-    }
-
 
     @Override
     public void setContact(Contact contact) {
