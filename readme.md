@@ -1,7 +1,7 @@
 #Android Task (contacts list)
 
 ### Days elapsed: __14__ (initial commit).
-Current branch - **'mvp'**
+Last branch - **'mvp'**
 
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
