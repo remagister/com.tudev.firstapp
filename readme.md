@@ -1,7 +1,7 @@
 #Android Task (contacts list)
 
-### Days elapsed: __14__ (initial commit).
-Last branch - **'mvp'**
+### Days elapsed: 15 (initial commit).
+Last branch - **'listview'**
 
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
@@ -11,6 +11,7 @@ Last branch - **'mvp'**
 * [x] Part 2.4 - MVP debugged.
 * [x] Part 3 - List multiselection (with elements deletion).
 * [x] Part 3.1 - MVP improved, base classes added. List multiselection debug and state saving introduced. 
+* [x] Part 3.2 - Listview stability improved.
 * [ ] Image caching, storing and processing. 
 
 ## Known issues:
@@ -19,4 +20,4 @@ Last branch - **'mvp'**
 2. PAUSE GC is thrown all the time.
 3. ~~Main list multiple choice mode does not work :<~~
 4. ~~Main list can be multiselected, but cannot return to normal mode.~~
-5. ContactDAO is closed in MainActivity/onDestroy -> access to a closed file exception.
+5. ~~ContactDAO is closed in MainActivity/onDestroy -> access to a closed file exception.~~
