@@ -37,15 +37,25 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
         view.initState(state);
     }
 
-    @Override
-    public void onStart() {
+    void resetData(){
         if(Contacts.INSTANCE.getState() == ContactDBState.MODIFIED) {
-            getDAO().invalidate();
+            //getDAO().invalidate();
             getParentView().notifyDataChanged();
             Contacts.INSTANCE.reset();
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        resetData();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        resetData();
+    }
 
     @Override
     public void saveInstanceState(Bundle bundle) {

@@ -23,11 +23,12 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
     private Contact contact;
 
     public EditPresenter(IEditView parentView) {
-        super(parentView);
+        super(parentView, true);
     }
 
     @Override
     public void onCreate(Context context) {
+        super.onCreate(context);
         Intent intent = ((Activity) context ).getIntent();
         editingIntent = (ContactActionIntent) intent
                 .getSerializableExtra(MainPresenter.CONTACT_EDIT_INTENT_KEY);

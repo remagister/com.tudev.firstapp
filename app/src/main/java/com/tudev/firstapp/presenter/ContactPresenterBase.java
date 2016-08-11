@@ -3,6 +3,7 @@ package com.tudev.firstapp.presenter;
 import android.content.Context;
 
 import com.tudev.firstapp.data.Contacts;
+import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.dao.IContactReader;
 import com.tudev.firstapp.data.dao.IContactWriter;
@@ -48,7 +49,7 @@ public abstract class ContactPresenterBase<V extends IView> implements IPresente
 
     @Override
     public void onCreate(Context context) {
-        contacts = Contacts.INSTANCE.getDao(new SQLiteHelperBuilder(
+        contacts = new ContactDAO(new SQLiteHelperBuilder(
                 context.getApplicationContext()));
     }
 
@@ -59,6 +60,11 @@ public abstract class ContactPresenterBase<V extends IView> implements IPresente
 
     @Override
     public void onStart() {
+
+    }
+
+    @Override
+    public void onResume() {
 
     }
 

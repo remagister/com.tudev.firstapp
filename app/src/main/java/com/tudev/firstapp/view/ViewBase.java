@@ -46,6 +46,12 @@ public abstract class ViewBase<T extends IPresenter> extends AppCompatActivity i
         presenter.onStop();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
     public T getPresenter() {
         return presenter;
     }

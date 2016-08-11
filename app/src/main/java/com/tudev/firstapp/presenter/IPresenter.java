@@ -12,5 +12,6 @@ public interface IPresenter {
     void onStart();
     void onDestroy();
 
+    void onResume();
     void initialize();
 }

@@ -15,14 +15,21 @@ public enum Contacts{
     INSTANCE;
 
     private IContactDAO dao;
+    private IHelperBuilder helperBuilder;
 
     public void setDao(IContactDAO dao){
         this.dao = dao;
     }
 
     public IContactDAO getDao(IHelperBuilder builder){
-        if (dao == null) {
-            dao = new ContactDAO(builder);
+        if (dao == null || dao.isClosed()) {
+            if(builder != null) {
+                setDao(new ContactDAO(builder));
+                helperBuilder = builder;
+            }
+            else {
+                setDao(new ContactDAO(helperBuilder));
+            }
         }
         return dao;
     }

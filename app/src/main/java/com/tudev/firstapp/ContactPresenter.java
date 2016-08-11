@@ -21,11 +21,12 @@ public class ContactPresenter extends ContactPresenterBase<IContactView> impleme
     private Contact contact;
 
     public ContactPresenter(IContactView view) {
-        super(view);
+        super(view, true);
     }
 
     @Override
     public void onCreate(Context context) {
+        super.onCreate(context);
         Bundle extras = ((Activity) context).getIntent().getExtras();
         if (extras != null) {
             contact = (Contact) extras.get(ContactActivity.CONTACT_BUNDLE_KEY);
@@ -44,6 +45,7 @@ public class ContactPresenter extends ContactPresenterBase<IContactView> impleme
 
     @Override
     public void onStart() {
+        super.onStart();
         if(Contacts.INSTANCE.getState().hasId()) {
             contact = getReader().getContact(Contacts.INSTANCE.getState().getId());
             getParentView().setContact(contact);

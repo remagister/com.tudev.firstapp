@@ -146,10 +146,9 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
 
     @Override
     public void notifyDataChanged() {
-        initState(ContactAdapterState.NORMAL);
+        adapter.notifyDataSetInvalidated();
+        listView.invalidate();
     }
-
-
 
     @Override
     public List<Contact.ContactSimple> getRemoveList() {

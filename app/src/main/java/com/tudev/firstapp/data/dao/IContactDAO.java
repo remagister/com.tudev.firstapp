@@ -13,4 +13,6 @@ public interface IContactDAO extends Closeable {
     IContactReader getReader();
     IContactWriter getWriter();
     void invalidate();
+
+    boolean isClosed();
 }

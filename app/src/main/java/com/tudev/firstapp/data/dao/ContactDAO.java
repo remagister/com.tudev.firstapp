@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.tudev.firstapp.data.helper.IHelperBuilder;
+import com.tudev.firstapp.data.sql.BlankDefinition;
 import com.tudev.firstapp.data.sql.DatabaseDefinition;
 import com.tudev.firstapp.data.sql.FieldDefinition;
 import com.tudev.firstapp.data.sql.IDatabaseDefinition;
@@ -32,26 +33,34 @@ public class ContactDAO implements IContactDAO {
     private IDatabaseDefinition databaseDefinition;
 
     private SQLiteOpenHelper helper;
-    private SQLiteDatabase readable;
-    private SQLiteDatabase writable;
+    private static SQLiteDatabase readable;
+    private static SQLiteDatabase writable;
+    private static boolean firstAppearance = true;
 
-    private List<Contact.ContactSimple> contactList = new ArrayList<>();
+    private boolean closed = false;
+
+    private static List<Contact.ContactSimple> contactList = new ArrayList<>();
 
     public ContactDAO(IHelperBuilder builder) {
-        databaseDefinition = new DatabaseDefinition(DB_NAME)
-            .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)
-                    .column(new FieldDefinition(ContactEntry._ID,
-                            IFieldDefinition.FieldType.INTEGER,
-                            EnumSet.of(IFieldDefinition.FieldModifier.PRIMARY_KEY,
-                                    IFieldDefinition.FieldModifier.AUTOINCREMENT)))
-                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_NAME,
-                        IFieldDefinition.FieldType.TEXT))
-                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_EMAIL,
-                        IFieldDefinition.FieldType.TEXT))
-                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_PHONE,
-                        IFieldDefinition.FieldType.TEXT))
-                .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
-                        IFieldDefinition.FieldType.TEXT)));
+        if(firstAppearance) {
+            databaseDefinition = new DatabaseDefinition(DB_NAME)
+                    .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)
+                            .column(new FieldDefinition(ContactEntry._ID,
+                                    IFieldDefinition.FieldType.INTEGER,
+                                    EnumSet.of(IFieldDefinition.FieldModifier.PRIMARY_KEY,
+                                            IFieldDefinition.FieldModifier.AUTOINCREMENT)))
+                            .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_NAME,
+                                    IFieldDefinition.FieldType.TEXT))
+                            .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_EMAIL,
+                                    IFieldDefinition.FieldType.TEXT))
+                            .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_PHONE,
+                                    IFieldDefinition.FieldType.TEXT))
+                            .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
+                                    IFieldDefinition.FieldType.TEXT)));
+            firstAppearance = false;
+        } else {
+            databaseDefinition = new BlankDefinition(DB_NAME);
+        }
         helper = builder.build(databaseDefinition);
     }
 
@@ -89,11 +98,19 @@ public class ContactDAO implements IContactDAO {
     public void close() throws IOException {
         if(readable != null){
             readable.close();
+            readable = null;
         }
         if(writable != null){
             writable.close();
+            writable = null;
         }
         helper.close();
+        closed = true;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return closed;
     }
 
     private static long getId(Cursor cursor){
@@ -103,7 +120,7 @@ public class ContactDAO implements IContactDAO {
         return cursor.getString(cursor.getColumnIndex(field));
     }
 
-    private void fillListSimple(List<Contact.ContactSimple> list, Cursor cursor){
+    private static void fillListSimple(List<Contact.ContactSimple> list, Cursor cursor){
         while (cursor.moveToNext()) {
             Contact.ContactSimple contact = new Contact.ContactSimple(getId(cursor));
             contact.setName(getString(cursor, ContactEntry.CONTACTS_FIELD_NAME));
