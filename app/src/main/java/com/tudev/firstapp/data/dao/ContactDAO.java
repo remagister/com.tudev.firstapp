@@ -30,8 +30,6 @@ public class ContactDAO implements IContactDAO {
 
     private static final String DB_NAME = "contacts.db";
 
-    private IDatabaseDefinition databaseDefinition;
-
     private SQLiteOpenHelper helper;
     private static SQLiteDatabase readable;
     private static SQLiteDatabase writable;
@@ -42,6 +40,7 @@ public class ContactDAO implements IContactDAO {
     private static List<Contact.ContactSimple> contactList = new ArrayList<>();
 
     public ContactDAO(IHelperBuilder builder) {
+        IDatabaseDefinition databaseDefinition;
         if(firstAppearance) {
             databaseDefinition = new DatabaseDefinition(DB_NAME)
                     .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)

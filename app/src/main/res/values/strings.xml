@@ -15,4 +15,5 @@
     <string name="field_empty_message">One of fields is not filled. Check it.</string>
     <string name="editImageView_descr">Contact image</string>
     <string name="selectImageTitle">Select Image</string>
+    <string name="imageNotPickedError">Image was not picked.</string>
 </resources>

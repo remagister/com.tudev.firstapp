@@ -3,6 +3,7 @@ package com.tudev.firstapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -11,7 +12,11 @@ import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.helper.SQLiteHelperBuilder;
+import com.tudev.firstapp.graphics.ImageCompressingUnit;
+import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.presenter.ContactPresenterBase;
+
+import java.io.IOException;
 
 /**
  * Created by arseniy on 07.08.16.
@@ -74,7 +79,12 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
     }
 
     @Override
-    public void onImageReceived() {
+    public void onImageReceived(ImageInfo desiredImageInfo){
         // TODO: 10.08.16 ON IMAGE RECEIVED IMPLEMENTATION
+        try {
+            getParentView().setThumbnail(ImageCompressingUnit.getCompressedBitmap(desiredImageInfo));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

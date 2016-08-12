@@ -1,5 +1,7 @@
 package com.tudev.firstapp;
 
+import android.graphics.Bitmap;
+
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.IView;
 
@@ -14,5 +16,7 @@ public interface IEditView extends IView {
     boolean validate();
 
     Contact extractData(long id);
+
+    void setThumbnail(Bitmap bitmap);
 
 }

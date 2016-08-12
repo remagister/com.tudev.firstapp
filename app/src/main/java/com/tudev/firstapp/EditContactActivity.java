@@ -1,19 +1,20 @@
 package com.tudev.firstapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
-import com.tudev.firstapp.data.SQLContactHelper;
-import com.tudev.firstapp.data.SimpleContactDatabase;
+import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.view.ViewBase;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +72,21 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // TODO: GET IMAGE
+        if (requestCode == PICK_IMAGE_CODE && resultCode == RESULT_OK) {
+            if (data == null) {
+                message(R.string.imageNotPickedError);
+            }
+            else {
+                try {
+                    getPresenter().onImageReceived(
+                            new ImageInfo(getContentResolver().openInputStream(data.getData()),
+                                    imageView.getWidth(), imageView.getHeight())
+                    );
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override
@@ -104,5 +119,13 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         ret.setPhone(phoneEditText.getText().toString());
         // TODO: get image raw data
         return ret;
+    }
+
+    @Override
+    public void setThumbnail(Bitmap bitmap) {
+        if(bitmap == null){
+            Log.e(getClass().getName(), "BITMAP == null");
+        }
+        imageView.setImageBitmap(bitmap);
     }
 }

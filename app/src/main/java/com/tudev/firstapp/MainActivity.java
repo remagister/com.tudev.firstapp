@@ -2,18 +2,15 @@ package com.tudev.firstapp;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.Checkable;
 import android.widget.ListView;
 
 import com.tudev.firstapp.adapter.ContactAdapter;
 import com.tudev.firstapp.adapter.ContactAdapterState;
 import com.tudev.firstapp.adapter.StateAdapter;
-import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.ViewBase;
 
