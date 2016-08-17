@@ -14,7 +14,6 @@ import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.view.ViewBase;
 
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +22,8 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
 
     public static final int PICK_IMAGE_CODE = 1;
 
+    private IEditImagePresenter imagePresenter;
+
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
     @BindView(R.id.editPhoneText) EditText phoneEditText;
@@ -30,7 +31,9 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     @BindView(R.id.editImageView) ImageView imageView;
 
     @Override
-    public IEditPresenter onPresenterCreate() {
+    public IEditPresenter onPresenterCreate()
+    {
+        imagePresenter = new EditImagePresenter(this);
         return new EditPresenter(this);
     }
 

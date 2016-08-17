@@ -16,4 +16,5 @@
     <string name="editImageView_descr">Contact image</string>
     <string name="selectImageTitle">Select Image</string>
     <string name="imageNotPickedError">Image was not picked.</string>
+    <string name="contactImage_descr">Contact Image</string>
 </resources>

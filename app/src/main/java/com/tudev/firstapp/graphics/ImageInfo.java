@@ -23,7 +23,7 @@ public class ImageInfo {
         this.height = height;
     }
 
-    private ImageInfo(InputStream stream, BitmapFactory.Options options) {
+    public ImageInfo(InputStream stream, BitmapFactory.Options options) {
         this.stream = stream;
         this.options = options;
         this.width = options.outWidth;

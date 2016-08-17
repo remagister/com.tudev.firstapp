@@ -2,7 +2,6 @@ package com.tudev.firstapp.presenter;
 
 import android.content.Context;
 
-import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.dao.IContactReader;
@@ -16,23 +15,23 @@ import java.io.IOException;
  * Created by arseniy on 10.08.16.
  */
 
-public abstract class ContactPresenterBase<V extends IView> implements IPresenter {
+public abstract class ContactPresenterBase<VT extends IView> implements IPresenter {
 
     private IContactDAO contacts;
     private IView parentView;
     private boolean disposal;
 
-    public ContactPresenterBase(V view) {
+    public ContactPresenterBase(VT view) {
         this(view, false);
     }
 
-    public ContactPresenterBase(V view, boolean onDisposalNeeded){
+    public ContactPresenterBase(VT view, boolean onDisposalNeeded){
         parentView = view;
         disposal = onDisposalNeeded;
     }
 
-    public V getParentView() {
-        return (V) parentView;
+    public VT getParentView() {
+        return (VT) parentView;
     }
 
     protected IContactReader getReader(){

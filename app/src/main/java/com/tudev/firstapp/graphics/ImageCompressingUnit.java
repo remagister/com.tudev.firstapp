@@ -13,14 +13,23 @@ import java.io.InputStream;
  * Created by arseniy on 12.08.16.
  */
 
-public class ImageCompressingUnit {
+public final class ImageCompressingUnit {
 
-    private ImageInfo info;
-    private int compressionRate;
+    private static final Rect NO_PADDING = new Rect(-1, -1, -1, -1);
 
-    public ImageCompressingUnit(int desiredWidth, int desiredHeight, ImageInfo imageInfo) {
-        info = imageInfo;
-        compressionRate = calculateCompressionRate(desiredWidth, desiredHeight, info);
+
+    public static BitmapFactory.Options getImageOptions(InputStream stream){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeStream(stream, NO_PADDING, options);
+        return options;
+    }
+
+    public static Bitmap getCompressedBitmap(int desiredWid, int desiredHeight, ImageInfo info){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds =  false;
+        options.inSampleSize = calculateCompressionRate(desiredWid, desiredHeight, info);
+        return BitmapFactory.decodeStream(info.getStream(), NO_PADDING, options);
     }
 
     public static Bitmap getCompressedBitmap(int desiredWidth, int desiredHeight, InputStream stream) throws IOException {
