@@ -17,6 +17,8 @@
         android:src="@android:drawable/ic_menu_report_image"
         android:minHeight="@dimen/avatar_height"
         android:minWidth="@dimen/avatar_width"
+        android:maxHeight="@dimen/avatar_height"
+        android:maxWidth="@dimen/avatar_width"
         android:background="#4e4e4e"
         android:cropToPadding="false"
         android:padding="1dp"

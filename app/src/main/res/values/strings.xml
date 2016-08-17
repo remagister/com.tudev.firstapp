@@ -17,4 +17,6 @@
     <string name="selectImageTitle">Select Image</string>
     <string name="imageNotPickedError">Image was not picked.</string>
     <string name="contactImage_descr">Contact Image</string>
+    <string name="iconCompressingFalse">Could not compress image (ICON)</string>
+    <string name="thumbCompressingFalse">Could not compress image (THUMB)</string>
 </resources>

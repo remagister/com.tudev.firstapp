@@ -52,6 +52,19 @@ public abstract class ViewBase<T extends IPresenter> extends AppCompatActivity i
         presenter.onResume();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        presenter.onSaveState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        presenter.onLoadState(savedInstanceState);
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
     public T getPresenter() {
         return presenter;
     }

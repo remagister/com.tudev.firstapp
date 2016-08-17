@@ -9,11 +9,14 @@ import java.io.Serializable;
  */
 
 public class Contact implements Serializable, Comparable<Contact>{
-    private String name = "";
-    private String email = "";
-    private String phone = "";
+
+    public static final String EMPTY = "";
+
+    private String name = EMPTY;
+    private String email = EMPTY;
+    private String phone = EMPTY;
     private long id;
-    private String image = "";
+    private String image = EMPTY;
 
     public Contact(long id){
         this.id = id;
@@ -23,7 +26,6 @@ public class Contact implements Serializable, Comparable<Contact>{
         name = n;
         email = e;
     }
-
 
     public String getName() {
         return name;
@@ -78,9 +80,9 @@ public class Contact implements Serializable, Comparable<Contact>{
     }
 
     public static class ContactSimple implements Serializable{
-        private String name = "";
-        private String phone = "";
-        private String imageThumb = "";
+        private String name = EMPTY;
+        private String phone = EMPTY;
+        private String imageThumb = EMPTY;
         private long id;
 
         public ContactSimple(long id){

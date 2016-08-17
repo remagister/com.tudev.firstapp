@@ -1,5 +1,6 @@
 package com.tudev.firstapp;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.tudev.firstapp.data.dao.Contact;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 public interface IEditPresenter extends IPresenter {
 
-    void acceptButtonClick();
+    void acceptButtonClick(Context context);
 
-    void onImageReceived(ImageInfo desiredImageInfo);
+    void onImageReceived(Context context, Uri imageUri);
 }

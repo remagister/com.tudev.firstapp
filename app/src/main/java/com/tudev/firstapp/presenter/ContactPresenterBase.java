@@ -1,6 +1,7 @@
 package com.tudev.firstapp.presenter;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
@@ -53,6 +54,11 @@ public abstract class ContactPresenterBase<VT extends IView> implements IPresent
     }
 
     @Override
+    public void onLoadState(Bundle bundle) {
+
+    }
+
+    @Override
     public void onStop() {
 
     }
@@ -64,6 +70,16 @@ public abstract class ContactPresenterBase<VT extends IView> implements IPresent
 
     @Override
     public void onResume() {
+
+    }
+
+    @Override
+    public void onSaveState(Bundle bundle) {
+
+    }
+
+    @Override
+    public void initialize() {
 
     }
 

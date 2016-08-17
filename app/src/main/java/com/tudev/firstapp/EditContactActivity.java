@@ -2,6 +2,8 @@ package com.tudev.firstapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.view.ViewBase;
@@ -22,8 +25,6 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
 
     public static final int PICK_IMAGE_CODE = 1;
 
-    private IEditImagePresenter imagePresenter;
-
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
     @BindView(R.id.editPhoneText) EditText phoneEditText;
@@ -33,7 +34,6 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     @Override
     public IEditPresenter onPresenterCreate()
     {
-        imagePresenter = new EditImagePresenter(this);
         return new EditPresenter(this);
     }
 
@@ -47,8 +47,7 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: check validity and accept changes
-                getPresenter().acceptButtonClick();
+                getPresenter().acceptButtonClick(EditContactActivity.this);
             }
         });
 
@@ -80,14 +79,7 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
                 message(R.string.imageNotPickedError);
             }
             else {
-                try {
-                    getPresenter().onImageReceived(
-                            new ImageInfo(getContentResolver().openInputStream(data.getData()),
-                                    imageView.getWidth(), imageView.getHeight())
-                    );
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                getPresenter().onImageReceived(this, data.getData());
             }
         }
     }
@@ -104,7 +96,16 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         nameEditText.setText(contact.getName());
         emailEditText.setText(contact.getEmail());
         phoneEditText.setText(contact.getPhone());
-        // TODO: IMAGE SETTING
+        if(!contact.getImage().equals(Contact.EMPTY)){
+            Picasso.with(this).load(
+                    Uri.withAppendedPath(EditPresenter.getIconsUri(Uri.fromFile(getCacheDir())),
+                            contact.getImage())
+            ).resize(imageView.getMeasuredWidth(),imageView.getMeasuredHeight()).into(imageView);
+        }
+    }
+
+    private int getDimen(int id){
+        return getResources().getDimensionPixelSize(id);
     }
 
     @Override
@@ -115,20 +116,18 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     }
 
     @Override
-    public Contact extractData(long id) {
-        Contact ret = new Contact(id);
-        ret.setName(nameEditText.getText().toString());
-        ret.setEmail(emailEditText.getText().toString());
-        ret.setPhone(phoneEditText.getText().toString());
-        // TODO: get image raw data
-        return ret;
+    public void extractData(Contact outContact) {
+        outContact.setName(nameEditText.getText().toString());
+        outContact.setEmail(emailEditText.getText().toString());
+        outContact.setPhone(phoneEditText.getText().toString());
     }
 
     @Override
-    public void setThumbnail(Bitmap bitmap) {
-        if(bitmap == null){
-            Log.e(getClass().getName(), "BITMAP == null");
-        }
-        imageView.setImageBitmap(bitmap);
+    public void setImage(Bitmap bitmap) {
+        imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap,
+                getDimen(R.dimen.avatar_width),
+                getDimen(R.dimen.avatar_height),
+                true
+                ));
     }
 }

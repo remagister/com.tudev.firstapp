@@ -15,8 +15,7 @@ public interface IEditView extends IView {
 
     boolean validate();
 
-    Contact extractData(long id);
+    void extractData(Contact outContact);
 
-    void setThumbnail(Bitmap bitmap);
-
+    void setImage(Bitmap bitmap);
 }
