@@ -1,7 +1,7 @@
 #Android Task (contacts list)
 
 ### Days elapsed: 15 (initial commit).
-Last branch - **'listview'**
+Last branch - **'image'**
 
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
@@ -12,7 +12,7 @@ Last branch - **'listview'**
 * [x] Part 3 - List multiselection (with elements deletion).
 * [x] Part 3.1 - MVP improved, base classes added. List multiselection debug and state saving introduced. 
 * [x] Part 3.2 - Listview stability improved.
-* [ ] Image caching, storing and processing. 
+* [x] Part 4 - Image loading stabilized, saving and restoring routines added. 
 
 ## Known issues:
 
