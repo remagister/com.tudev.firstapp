@@ -7,17 +7,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 
+import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.graphics.ImageCompressingUnit;
 import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.presenter.ContactPresenterBase;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Struct;
+import java.util.StringTokenizer;
 
 /**
  * Created by arseniy on 07.08.16.
@@ -46,11 +52,11 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
         super(parentView, true);
     }
 
-    public static Uri getIconsUri(Uri file){
-        return Uri.withAppendedPath(file, ICONS_DIR);
+    public static Uri getIconsUri(Context context){
+        return Uri.withAppendedPath(Uri.fromFile(context.getCacheDir()), ICONS_DIR);
     }
-    public static Uri getThumbsUri(Uri file){
-        return Uri.withAppendedPath(file, THUMBNAILS_DIR);
+    public static Uri getThumbsUri(Context context){
+        return Uri.withAppendedPath(Uri.fromFile(context.getCacheDir()), THUMBNAILS_DIR);
     }
 
     @Override
@@ -64,11 +70,24 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
         }
     }
 
+    private boolean checkOrCreate(String path){
+        File fcheck = new File(path);
+        if(!fcheck.exists() || !fcheck.isDirectory()){
+            return fcheck.mkdir();
+        }
+        return true;
+    }
     @Override
     public void onCreate(Context context) {
         super.onCreate(context);
-        iconsUri = getIconsUri(Uri.fromFile(context.getCacheDir()));
-        thumbsUri = getThumbsUri(Uri.fromFile(context.getCacheDir()));
+        iconsUri = getIconsUri(context);
+        thumbsUri = getThumbsUri(context);
+        if(!checkOrCreate(iconsUri.getPath())){
+            getParentView().message("Cannot find icons directory path");
+        }
+        if(!checkOrCreate(thumbsUri.getPath())){
+            getParentView().message("Cannot find thumbs directory path");
+        }
         Intent intent = ((Activity) context ).getIntent();
         editingIntent = (ContactActionIntent) intent
                 .getSerializableExtra(MainPresenter.CONTACT_EDIT_INTENT_KEY);
@@ -124,16 +143,14 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
     private void saveCache(Context context) throws IOException {
         // save icon
         if(bitmapIcon != null && bitmapThumbnail != null) {
-            FileOutputStream writer = context.openFileOutput(
-                    Uri.withAppendedPath(iconsUri, contact.getImage()).getPath(),
-                    Context.MODE_PRIVATE);
+            FileOutputStream writer = new FileOutputStream(
+                    Uri.withAppendedPath(iconsUri, contact.getImage()).getPath());
             if(!bitmapIcon.compress(COMPRESS_FORMAT, COMPRESS_RATE, writer)){
                 getParentView().message(context.getString(R.string.iconCompressingFalse));
             }
             writer.close();
-            writer = context.openFileOutput(
-                    Uri.withAppendedPath(thumbsUri, contact.getImage()).getPath(),
-                    Context.MODE_PRIVATE);
+            writer = new FileOutputStream(
+                    Uri.withAppendedPath(thumbsUri, contact.getImage()).getPath());
             if(!bitmapThumbnail.compress(COMPRESS_FORMAT, COMPRESS_RATE, writer)){
                 getParentView().message(context.getString(R.string.thumbCompressingFalse));
             }
@@ -169,17 +186,16 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
                         getStream(context, uri)
                 );
                 info = new ImageInfo(getStream(context, uri), bitmapOptions);
-                bitmapIcon = ImageCompressingUnit.getCompressedBitmap(
-                        getDimension(context, R.dimen.avatar_width),
-                        getDimension(context, R.dimen.avatar_height),
-                        info);
+                int wid = getDimension(context, R.dimen.avatar_width);
+                int hei = getDimension(context, R.dimen.avatar_height);
+                bitmapIcon = Bitmap.createScaledBitmap(
+                        ImageCompressingUnit.getCompressedBitmap(wid, hei, info), wid, hei, true);
                 info.getStream().close();
+                wid = getDimension(context, R.dimen.thumbnail_width);
+                hei = getDimension(context, R.dimen.thumbnail_height);
                 info = new ImageInfo(getStream(context, uri), bitmapOptions);
-                bitmapThumbnail = ImageCompressingUnit.getCompressedBitmap(
-                        getDimension(context, R.dimen.avatar_width),
-                        getDimension(context, R.dimen.avatar_height),
-                        info
-                );
+                bitmapThumbnail = Bitmap.createScaledBitmap(
+                        ImageCompressingUnit.getCompressedBitmap(wid, hei, info), wid, hei, true);
                 info.getStream().close();
                 getParentView().setImage(bitmapIcon);
             } catch (IOException e) {

@@ -61,7 +61,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         if(savedInstanceState != null){
-            getPresenter().restore(savedInstanceState);
+            getPresenter().onLoadState(savedInstanceState);
         }
         initializePresenter();
         actionButton.setOnClickListener(new View.OnClickListener() {
@@ -98,17 +98,6 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         }
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        getPresenter().saveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        getPresenter().restore(savedInstanceState);
-    }
 
     void setButtonState(ContactAdapterState state){
         switch (state){
@@ -143,8 +132,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
 
     @Override
     public void notifyDataChanged() {
-        adapter.notifyDataSetInvalidated();
-        listView.invalidate();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

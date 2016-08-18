@@ -1,6 +1,6 @@
 #Android Task (contacts list)
 
-### Days elapsed: 15 (initial commit).
+### Days elapsed: 22 (from initial commit).
 Last branch - **'image'**
 
 * [x] Part 1 - ListView and Activities.
@@ -12,7 +12,8 @@ Last branch - **'image'**
 * [x] Part 3 - List multiselection (with elements deletion).
 * [x] Part 3.1 - MVP improved, base classes added. List multiselection debug and state saving introduced. 
 * [x] Part 3.2 - Listview stability improved.
-* [x] Part 4 - Image loading stabilized, saving and restoring routines added. 
+* [x] Part 4 - Image loading stabilized, saving and restoring routines added.
+* [x] Part 4.1 - Images & thumbs saving, caching and viewing established.
 
 ## Known issues:
 
@@ -21,3 +22,7 @@ Last branch - **'image'**
 3. ~~Main list multiple choice mode does not work :<~~
 4. ~~Main list can be multiselected, but cannot return to normal mode.~~
 5. ~~ContactDAO is closed in MainActivity/onDestroy -> access to a closed file exception.~~
+6. When editing contact, previously loaded image icon may eventually disappear on orientation change.
+7. Thumbnails not well aligned enough.
+8. Contact and edit contact screens' layout ruins in landscape mode. 
+9. Not an actual bug, but images stretching is harsh.

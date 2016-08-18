@@ -2,10 +2,8 @@ package com.tudev.firstapp;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +11,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.dao.Contact;
-import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.view.ViewBase;
-
-import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,14 +93,10 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         phoneEditText.setText(contact.getPhone());
         if(!contact.getImage().equals(Contact.EMPTY)){
             Picasso.with(this).load(
-                    Uri.withAppendedPath(EditPresenter.getIconsUri(Uri.fromFile(getCacheDir())),
+                    Uri.withAppendedPath(EditPresenter.getIconsUri(this),
                             contact.getImage())
-            ).resize(imageView.getMeasuredWidth(),imageView.getMeasuredHeight()).into(imageView);
+            ).into(imageView);
         }
-    }
-
-    private int getDimen(int id){
-        return getResources().getDimensionPixelSize(id);
     }
 
     @Override
@@ -124,10 +115,6 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
 
     @Override
     public void setImage(Bitmap bitmap) {
-        imageView.setImageBitmap(Bitmap.createScaledBitmap(bitmap,
-                getDimen(R.dimen.avatar_width),
-                getDimen(R.dimen.avatar_height),
-                true
-                ));
+        imageView.setImageBitmap(bitmap);
     }
 }

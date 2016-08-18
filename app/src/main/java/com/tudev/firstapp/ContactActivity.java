@@ -1,10 +1,13 @@
 package com.tudev.firstapp;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.ViewBase;
 
@@ -19,6 +22,7 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
     @BindView(R.id.contactTextEmail) TextView emailTextView;
     @BindView(R.id.contactPhoneLabel) TextView phoneTextView; // FIXME: 03.08.2016 rename label
     @BindView(R.id.buttonEditContact) Button buttonEdit;
+    @BindView(R.id.contactIconView) ImageView imageView;
 
     @Override
     public IContactPresenter onPresenterCreate() {
@@ -43,8 +47,18 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
     @Override
     public void setContact(Contact contact) {
         String undefined = getString(R.string.undefined_contact);
-        nameTextView.setText(contact == null ? undefined : contact.getName());
-        emailTextView.setText(contact == null ? undefined : contact.getEmail());
-        phoneTextView.setText(contact == null ? undefined : contact.getPhone());
+        if(contact == null){
+            nameTextView.setText(undefined);
+            emailTextView.setText(undefined);
+            phoneTextView.setText(undefined);
+        } else {
+            nameTextView.setText(contact.getName());
+            emailTextView.setText(contact.getEmail());
+            phoneTextView.setText(contact.getPhone());
+            Uri filename = Uri.withAppendedPath(
+                    EditPresenter.getIconsUri(this),
+                    contact.getImage());
+            Picasso.with(this).load(filename).into(imageView);
+        }
     }
 }

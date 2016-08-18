@@ -21,8 +21,6 @@ public interface IMainPresenter extends IPresenter {
     void itemClicked(Contact.ContactSimple contactSimple);
 
     void initialize();
-    void restore(Bundle saved);
-    void saveInstanceState(Bundle bundle);
 
     void onItemLongClick();
     void onBackPressed();

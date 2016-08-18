@@ -26,8 +26,9 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
     }
 
     @Override
-    public void restore(Bundle saved) {
-        state = (ContactAdapterState) saved.getSerializable(ContactAdapterState.STATE_KEY);
+    public void onLoadState(Bundle bundle) {
+        state = (ContactAdapterState) bundle.getSerializable(ContactAdapterState.STATE_KEY);
+        super.onLoadState(bundle);
     }
 
     @Override
@@ -37,7 +38,7 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
         view.initState(state);
     }
 
-    void resetData(){
+    private void resetData(){
         if(Contacts.INSTANCE.getState() == ContactDBState.MODIFIED) {
             //getDAO().invalidate();
             getParentView().notifyDataChanged();
@@ -58,9 +59,11 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
     }
 
     @Override
-    public void saveInstanceState(Bundle bundle) {
+    public void onSaveState(Bundle bundle) {
         bundle.putSerializable(ContactAdapterState.STATE_KEY, state);
+        super.onSaveState(bundle);
     }
+
 
     @Override
     public void buttonClicked(AddButtonIntent state) {
@@ -76,6 +79,7 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
                 List<Contact.ContactSimple> removeList = view.getRemoveList();
                 getWriter().removeContacts(removeList);
                 view.notifyDataChanged();
+                view.initState(this.state = ContactAdapterState.NORMAL);
                 break;
             }
         }
