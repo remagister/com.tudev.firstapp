@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends ViewBase<IMainPresenter> implements IMainView {
 
 
-    private class ItemClickListener implements AdapterView.OnItemClickListener{
+    private class ItemClickListener implements AdapterView.OnItemClickListener {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -31,11 +31,11 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         }
     }
 
-    private class ItemLongClickListener implements AdapterView.OnItemLongClickListener{
+    private class ItemLongClickListener implements AdapterView.OnItemLongClickListener {
 
         @Override
         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-            if(adapter.getState() == ContactAdapterState.SELECTION){
+            if (adapter.getState() == ContactAdapterState.SELECTION) {
                 return false;
             }
             getPresenter().onItemLongClick();
@@ -47,8 +47,10 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
     private AdapterView.OnItemLongClickListener longClickListener = new ItemLongClickListener();
     private AdapterView.OnItemClickListener itemClickListener = new ItemClickListener();
     private StateAdapter<ContactAdapterState> adapter;
-    @BindView(R.id.listViewOne) ListView listView;
-    @BindView(R.id.listActionButton) Button actionButton;
+    @BindView(R.id.listViewOne)
+    ListView listView;
+    @BindView(R.id.listActionButton)
+    Button actionButton;
 
     @Override
     public IMainPresenter onPresenterCreate() {
@@ -60,7 +62,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             getPresenter().onLoadState(savedInstanceState);
         }
         initializePresenter();
@@ -74,9 +76,9 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
 
     @Override
     public void onBackPressed() {
-        if(adapter.getState() == ContactAdapterState.SELECTION){
+        if (adapter.getState() == ContactAdapterState.SELECTION) {
             // deselect all
-            for(int i=0; i<adapter.getCount(); ++i){
+            for (int i = 0; i < adapter.getCount(); ++i) {
                 listView.setItemChecked(i, false);
             }
             getPresenter().onBackPressed();
@@ -86,29 +88,28 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
     }
 
     @Override
-    public void initState(ContactAdapterState state){
+    public void initState(ContactAdapterState state) {
         setSelectionMode(state);
         if (state == ContactAdapterState.NORMAL) {
             listView.setOnItemClickListener(itemClickListener);
             listView.setOnItemLongClickListener(longClickListener);
-        }
-        else{
+        } else {
             listView.setOnItemClickListener(null);
             listView.setOnItemLongClickListener(null);
         }
     }
 
 
-    void setButtonState(ContactAdapterState state){
-        switch (state){
-            case SELECTION:{
+    void setButtonState(ContactAdapterState state) {
+        switch (state) {
+            case SELECTION: {
                 actionButton.setText(MainActivity.this.getString(R.string.remove_button));
                 actionButton.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                         android.R.color.holo_red_dark));
                 actionButton.setTag(AddButtonIntent.REMOVE);
                 break;
             }
-            case NORMAL:{
+            case NORMAL: {
                 actionButton.setText(MainActivity.this.getString(R.string.add_button));
                 actionButton.setBackgroundColor(ContextCompat.getColor(MainActivity.this,
                         android.R.color.holo_green_dark));
@@ -118,10 +119,10 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         }
     }
 
-    private void setSelectionMode(ContactAdapterState state){
+    private void setSelectionMode(ContactAdapterState state) {
         setButtonState(state);
         adapter.stateChanged(state);
-        adapter.notifyDataSetInvalidated();
+        //adapter.notifyDataSetInvalidated();
     }
 
     @Override
@@ -140,7 +141,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         SparseBooleanArray array = listView.getCheckedItemPositions();
         List<Contact.ContactSimple> removeList = new ArrayList<>();
         for (int i = 0; i < array.size(); ++i) {
-            if(array.get(i)){
+            if (array.get(i)) {
                 removeList.add((Contact.ContactSimple) listView.getItemAtPosition(i));
             }
         }

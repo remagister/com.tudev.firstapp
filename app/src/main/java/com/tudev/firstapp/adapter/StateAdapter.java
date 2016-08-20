@@ -19,7 +19,6 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
 
     private T state;
 
-
     private LayoutInflater internalInflater;
 
     public StateAdapter(T initial){

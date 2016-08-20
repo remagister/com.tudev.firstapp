@@ -1,6 +1,6 @@
 #Android Task (contacts list)
 
-### Days elapsed: 24 (from initial commit 27.07).
+### Days elapsed: 25 (from initial commit 27.07).
 Last branch - **'image'**
 
 * [x] Part 1 - ListView and Activities.
@@ -26,3 +26,4 @@ Last branch - **'image'**
 7. Thumbnails not well aligned enough.
 8. Contact and edit contact screens' layout ruins in landscape mode. 
 9. Not an actual bug, but images stretching is harsh.
+10. Empty contact image thumbnail is somehow replaced by an another random pic.  

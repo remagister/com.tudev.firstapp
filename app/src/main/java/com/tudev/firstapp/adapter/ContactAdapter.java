@@ -90,7 +90,9 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         Contact.ContactSimple currentContact = getItem(i);
         holder.nameLabel.setText(currentContact.getName());
         holder.infoLabel.setText(currentContact.getPhone());
-        createThumb(getInternalInflater().getContext(), currentContact.getImageThumb(), holder.imageView);
+        if(!currentContact.getImageThumb().equals(Contact.EMPTY)) {
+            createThumb(getInternalInflater().getContext(), currentContact.getImageThumb(), holder.imageView);
+        }
         switch (state){
             case NORMAL: {
                 holder.checkBox.setVisibility(View.GONE);
