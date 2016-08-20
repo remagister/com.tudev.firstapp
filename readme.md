@@ -14,6 +14,9 @@ Last branch - **'image'**
 * [x] Part 3.2 - Listview stability improved.
 * [x] Part 4 - Image loading stabilized, saving and restoring routines added.
 * [x] Part 4.1 - Images & thumbs saving, caching and viewing established.
+* [ ] Part 5 - EventBus injection.
+* [ ] Part 6 - Custom calendar view.
+* [ ] Part 7 - Themes support. Bigender contact.
 
 ## Known issues:
 
@@ -26,4 +29,5 @@ Last branch - **'image'**
 7. Thumbnails not well aligned enough.
 8. Contact and edit contact screens' layout ruins in landscape mode. 
 9. Not an actual bug, but images stretching is harsh.
-10. Empty contact image thumbnail is somehow replaced by an another random pic.  
+10. Empty contact image thumbnail is somehow replaced by an another random pic.
+  
