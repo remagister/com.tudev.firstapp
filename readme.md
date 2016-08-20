@@ -1,6 +1,6 @@
 #Android Task (contacts list)
 
-### Days elapsed: 24 (from initial commit).
+### Days elapsed: 24 (from initial commit 27.07).
 Last branch - **'image'**
 
 * [x] Part 1 - ListView and Activities.
