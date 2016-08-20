@@ -1,6 +1,6 @@
 #Android Task (contacts list)
 
-### Days elapsed: 22 (from initial commit).
+### Days elapsed: 24 (from initial commit).
 Last branch - **'image'**
 
 * [x] Part 1 - ListView and Activities.
@@ -22,7 +22,7 @@ Last branch - **'image'**
 3. ~~Main list multiple choice mode does not work :<~~
 4. ~~Main list can be multiselected, but cannot return to normal mode.~~
 5. ~~ContactDAO is closed in MainActivity/onDestroy -> access to a closed file exception.~~
-6. When editing contact, previously loaded image icon may eventually disappear on orientation change.
+6. ~~When editing contact, previously loaded image icon may eventually disappear on orientation change.~~
 7. Thumbnails not well aligned enough.
 8. Contact and edit contact screens' layout ruins in landscape mode. 
 9. Not an actual bug, but images stretching is harsh.

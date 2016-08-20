@@ -7,9 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 
-import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.graphics.ImageCompressingUnit;
@@ -17,13 +15,10 @@ import com.tudev.firstapp.graphics.ImageInfo;
 import com.tudev.firstapp.presenter.ContactPresenterBase;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Struct;
-import java.util.StringTokenizer;
 
 /**
  * Created by arseniy on 07.08.16.
@@ -65,7 +60,7 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
             contact = (Contact) bundle.getSerializable(ContactActivity.CONTACT_BUNDLE_KEY);
             bitmapIcon = bundle.getParcelable(BITMAP_ICON_BUNDLE_KEY);
             bitmapThumbnail = bundle.getParcelable(BITMAP_THUMB_BUNDLE_KEY);
-            getParentView().setImage(bitmapIcon);
+            //getParentView().setImage(bitmapIcon);
             super.onLoadState(bundle);
         }
     }
@@ -180,6 +175,7 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
         ImageInfo info;
         if(lastUri == null || lastUri.compareTo(uri) != 0) {
             try {
+                lastUri = uri;
                 contact.setImage(uri.getLastPathSegment());
                 // get image size and mime type
                 BitmapFactory.Options bitmapOptions = ImageCompressingUnit.getImageOptions(
