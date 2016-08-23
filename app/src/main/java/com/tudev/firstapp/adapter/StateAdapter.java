@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.EnumSet;
 
 
@@ -28,6 +31,7 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
     public StateAdapter(T initial, LayoutInflater inflater){
         internalInflater = inflater;
         this.state = initial;
+        EventBus.getDefault().register(this);
     }
 
     protected LayoutInflater getInternalInflater() {
@@ -51,8 +55,8 @@ public abstract class StateAdapter<T extends Enum<T>> extends BaseAdapter implem
     }
 
     @Override
-    public void stateChanged(T newState) {
-        state = newState;
-        super.notifyDataSetInvalidated();
+    @Subscribe
+    public void onStateChanged(StateChangedEvent<T> event) {
+        state = event.getState();
     }
 }

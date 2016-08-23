@@ -11,8 +11,11 @@ import android.widget.ListView;
 import com.tudev.firstapp.adapter.ContactAdapter;
 import com.tudev.firstapp.adapter.ContactAdapterState;
 import com.tudev.firstapp.adapter.StateAdapter;
+import com.tudev.firstapp.adapter.StateChangedEvent;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.ViewBase;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +47,8 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         }
     }
 
+    // ========== INTERNAL MEMBERS ==========
+
     private AdapterView.OnItemLongClickListener longClickListener = new ItemLongClickListener();
     private AdapterView.OnItemClickListener itemClickListener = new ItemClickListener();
     private StateAdapter<ContactAdapterState> adapter;
@@ -74,13 +79,17 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         });
     }
 
+    public void clearChecks(){
+        for (int i = 0; i < adapter.getCount(); ++i) {
+            listView.setItemChecked(i, false);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (adapter.getState() == ContactAdapterState.SELECTION) {
             // deselect all
-            for (int i = 0; i < adapter.getCount(); ++i) {
-                listView.setItemChecked(i, false);
-            }
+            clearChecks();
             getPresenter().onBackPressed();
         } else {
             super.onBackPressed();
@@ -121,7 +130,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
 
     private void setSelectionMode(ContactAdapterState state) {
         setButtonState(state);
-        adapter.stateChanged(state);
+        EventBus.getDefault().post(new StateChangedEvent<>(state));
         //adapter.notifyDataSetInvalidated();
     }
 
@@ -148,4 +157,9 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         return removeList;
     }
 
+    @Override
+    protected void onDestroy() {
+        clearChecks();
+        super.onDestroy();
+    }
 }

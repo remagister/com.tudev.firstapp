@@ -5,19 +5,19 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.EditPresenter;
 import com.tudev.firstapp.R;
-import com.tudev.firstapp.adapter.ContactAdapterState;
-import com.tudev.firstapp.adapter.StateAdapter;
 import com.tudev.firstapp.data.dao.Contact;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +26,59 @@ import java.util.List;
  * Created by Саша on 27.07.2016.
  */
 public class ContactAdapter extends StateAdapter<ContactAdapterState> {
+
+    private static class ViewHolder{
+        TextView nameLabel;
+        TextView infoLabel;
+        ImageView imageView;
+        CheckBox checkBox;
+    }
+
+    private static class WeakViewHolder implements IStateChangedListener<ContactAdapterState>{
+
+        private WeakReference<ViewHolder> viewHolderWeakReference;
+        private ViewHolder strongReference;
+
+        WeakViewHolder(ViewHolder holder) {
+            viewHolderWeakReference = new WeakReference<>(holder);
+            EventBus.getDefault().register(this);
+        }
+
+        void revive(ViewHolder holder){
+            viewHolderWeakReference = new WeakReference<ViewHolder>(holder);
+            if(!EventBus.getDefault().isRegistered(this)){
+                EventBus.getDefault().register(this);
+            }
+        }
+
+        ViewHolder get(){
+            return viewHolderWeakReference.get();
+        }
+
+        public ViewHolder open(){
+            if(strongReference != null) return strongReference;
+            strongReference = get();
+            return strongReference;
+        }
+
+        public void close(){
+            strongReference = null;
+        }
+
+        @Override
+        @Subscribe
+        public void onStateChanged(StateChangedEvent<ContactAdapterState> event) {
+            ViewHolder holder = get();
+            if(holder != null){
+                switchState(holder.checkBox, event.getState());
+            }
+            else{
+                EventBus.getDefault().unregister(this);
+            }
+        }
+    }
+
+    // ========== internal members ==========
 
     private List<Contact.ContactSimple> internalContacts;
 
@@ -37,13 +90,6 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         super(state, inflater);
         internalContacts = new ArrayList<>();
         internalContacts.addAll(contacts);
-    }
-
-    private static class ViewHolder{
-        TextView nameLabel;
-        TextView infoLabel;
-        ImageView imageView;
-        CheckBox checkBox;
     }
 
     private ViewHolder createHolder(View view){
@@ -75,35 +121,50 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         Picasso.with(context).load(filename).into(view);
     }
 
-    @Override
-    protected final View getViewState(int i, View view, ViewGroup group, ContactAdapterState state) {
-        ViewHolder holder;
-        if(view == null){
-            view = getInternalInflater().inflate(R.layout.contact_view, group, false);  // do not attach to root
-            holder = createHolder(view);
-            view.setTag(holder);
-            view.setSelected(true);
-        }
-        else {
-            holder = (ViewHolder) view.getTag();
-        }
-        Contact.ContactSimple currentContact = getItem(i);
-        holder.nameLabel.setText(currentContact.getName());
-        holder.infoLabel.setText(currentContact.getPhone());
-        if(!currentContact.getImageThumb().equals(Contact.EMPTY)) {
-            createThumb(getInternalInflater().getContext(), currentContact.getImageThumb(), holder.imageView);
-        }
+    private static void switchState(CheckBox box, ContactAdapterState state){
         switch (state){
             case NORMAL: {
-                holder.checkBox.setVisibility(View.GONE);
+                box.setVisibility(View.GONE);
                 break;
             }
             case SELECTION:{
-                holder.checkBox.setVisibility(View.VISIBLE);
+                box.setVisibility(View.VISIBLE);
                 break;
             }
         }
-        // TODO: 09.08.16 SET CONTACT THUMBNAIL
+    }
+
+    private void fillHolder(Contact.ContactSimple contact, ViewHolder holder, ContactAdapterState state){
+        holder.nameLabel.setText(contact.getName());
+        holder.infoLabel.setText(contact.getPhone());
+        if (!contact.getImageThumb().equals(Contact.EMPTY)) {
+            createThumb(getInternalInflater().getContext(), contact.getImageThumb(), holder.imageView);
+        }
+        switchState(holder.checkBox, state);
+    }
+
+    @Override
+    protected final View getViewState(int i, View view, ViewGroup group, ContactAdapterState state) {
+        WeakViewHolder weakViewHolder;
+        if(view == null){
+            view = getInternalInflater().inflate(R.layout.contact_view, group, false);  // do not attach to root
+            weakViewHolder = new WeakViewHolder(createHolder(view));
+            view.setTag(weakViewHolder);
+            view.setSelected(true);
+        }
+        else {
+            weakViewHolder = (WeakViewHolder) view.getTag();
+        }
+        Contact.ContactSimple currentContact = getItem(i);
+        ViewHolder holder = weakViewHolder.get();
+        if(holder != null) {
+            fillHolder(currentContact, holder,state);
+        }
+        else {
+            holder = createHolder(view);
+            fillHolder(currentContact, holder,state);
+            weakViewHolder.revive(holder);
+        }
         return view;
     }
 
