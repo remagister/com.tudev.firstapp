@@ -21,6 +21,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Саша on 27.07.2016.
@@ -28,10 +31,15 @@ import java.util.List;
 public class ContactAdapter extends StateAdapter<ContactAdapterState> {
 
     private static class ViewHolder{
-        TextView nameLabel;
-        TextView infoLabel;
-        ImageView imageView;
-        CheckBox checkBox;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+
+        @BindView(R.id.nameText) TextView nameLabel;
+        @BindView(R.id.descrText) TextView infoLabel;
+        @BindView(R.id.contactThumb) ImageView imageView;
+        @BindView(R.id.checkableView_selection) CheckBox checkBox;
     }
 
     private static class WeakViewHolder implements IStateChangedListener<ContactAdapterState>{
@@ -92,14 +100,6 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         internalContacts.addAll(contacts);
     }
 
-    private ViewHolder createHolder(View view){
-        ViewHolder ret = new ViewHolder();
-        ret.nameLabel = (TextView) view.findViewById(R.id.nameText);
-        ret.infoLabel = (TextView) view.findViewById(R.id.descrText);
-        ret.imageView = (ImageView) view.findViewById(R.id.contactThumb);
-        ret.checkBox = (CheckBox) view.findViewById(R.id.checkableView_selection);
-        return ret;
-    }
 
     @Override
     public int getCount() {
@@ -148,7 +148,7 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         WeakViewHolder weakViewHolder;
         if(view == null){
             view = getInternalInflater().inflate(R.layout.contact_view, group, false);  // do not attach to root
-            weakViewHolder = new WeakViewHolder(createHolder(view));
+            weakViewHolder = new WeakViewHolder(new ViewHolder(view));
             view.setTag(weakViewHolder);
             view.setSelected(true);
         }
@@ -161,7 +161,7 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
             fillHolder(currentContact, holder,state);
         }
         else {
-            holder = createHolder(view);
+            holder = new ViewHolder(view);
             fillHolder(currentContact, holder,state);
             weakViewHolder.revive(holder);
         }

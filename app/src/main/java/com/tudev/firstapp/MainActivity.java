@@ -31,6 +31,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             getPresenter().itemClicked((Contact.ContactSimple) adapterView.getItemAtPosition(i));
+            listView.setItemChecked(i, false);
         }
     }
 
@@ -131,7 +132,6 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
     private void setSelectionMode(ContactAdapterState state) {
         setButtonState(state);
         EventBus.getDefault().post(new StateChangedEvent<>(state));
-        //adapter.notifyDataSetInvalidated();
     }
 
     @Override

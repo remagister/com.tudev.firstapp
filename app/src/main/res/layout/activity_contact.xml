@@ -9,78 +9,68 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.tudev.firstapp.ContactActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/contactIconView"
-        android:src="@android:drawable/ic_menu_myplaces"
-        android:contentDescription="@string/contactImage_descr"
-        android:minWidth="@dimen/avatar_width"
-        android:minHeight="@dimen/avatar_height"
-        android:adjustViewBounds="false"
-        android:background="#e0e0e0"
-        android:longClickable="false"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        <ImageView
+            android:id="@+id/contactIconView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="false"
+            android:background="#e0e0e0"
+            android:contentDescription="@string/contactImage_descr"
+            android:longClickable="false"
+            android:minHeight="@dimen/avatar_height"
+            android:minWidth="@dimen/avatar_width"
+            android:src="@mipmap/ic_account_box_black_48dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/email_label"
-        android:id="@+id/textView2"
-        android:layout_centerVertical="true" />
+        <TextView
+            android:id="@+id/contactTextName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="gravity"
+            android:layout_gravity="center_horizontal"
+            android:text="Large Text"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/contactTextEmail"
-        android:textColor="#212121"
-        android:layout_above="@+id/textView5"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="5dp"
-        android:layout_marginEnd="5dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/phone_label"
-        android:id="@+id/textView5"
-        android:layout_below="@+id/textView2"
-        android:layout_alignLeft="@+id/textView2"
-        android:layout_alignStart="@+id/textView2" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/email_label"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/contactTextEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#212121" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/contactPhoneLabel"
-        android:textColor="#212121"
-        android:layout_below="@+id/contactTextEmail"
-        android:layout_alignLeft="@+id/contactTextEmail"
-        android:layout_alignStart="@+id/contactTextEmail" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/contactTextName"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/contactIconView"
-        android:layout_marginTop="10dp" />
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/phone_label"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/contactPhoneLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#212121" />
 
     <Button
+        android:id="@+id/buttonEditContact"
         android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:text="@string/edit_button"
-        android:id="@+id/buttonEditContact"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" />
 </RelativeLayout>

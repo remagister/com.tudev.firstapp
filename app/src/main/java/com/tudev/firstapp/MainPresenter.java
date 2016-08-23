@@ -20,7 +20,6 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
 
     private ContactAdapterState state = ContactAdapterState.NORMAL;
 
-    // disposal needed
     MainPresenter(IMainView parentView) {
         super(parentView, true);
     }
@@ -40,7 +39,6 @@ public class MainPresenter extends ContactPresenterBase<IMainView> implements IM
 
     private void resetData(){
         if(Contacts.INSTANCE.getState() == ContactDBState.MODIFIED) {
-            //getDAO().invalidate();
             getParentView().notifyDataChanged();
             Contacts.INSTANCE.reset();
         }
