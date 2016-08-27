@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  */
 public class ContactAdapter extends StateAdapter<ContactAdapterState> {
 
-    private static class ViewHolder{
+    static class ViewHolder{
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -53,7 +53,7 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
         }
 
         void revive(ViewHolder holder){
-            viewHolderWeakReference = new WeakReference<ViewHolder>(holder);
+            viewHolderWeakReference = new WeakReference<>(holder);
             if(!EventBus.getDefault().isRegistered(this)){
                 EventBus.getDefault().register(this);
             }
@@ -118,7 +118,10 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
 
     private static void createThumb(Context context, String name, ImageView view){
         Uri filename = Uri.withAppendedPath(EditPresenter.getThumbsUri(context), name);
-        Picasso.with(context).load(filename).into(view);
+        Picasso.with(context)
+                .load(filename)
+                .placeholder(R.mipmap.ic_account_box_black_24dp)
+                .into(view);
     }
 
     private static void switchState(CheckBox box, ContactAdapterState state){
@@ -150,7 +153,6 @@ public class ContactAdapter extends StateAdapter<ContactAdapterState> {
             view = getInternalInflater().inflate(R.layout.contact_view, group, false);  // do not attach to root
             weakViewHolder = new WeakViewHolder(new ViewHolder(view));
             view.setTag(weakViewHolder);
-            view.setSelected(true);
         }
         else {
             weakViewHolder = (WeakViewHolder) view.getTag();

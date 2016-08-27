@@ -95,7 +95,7 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
             Picasso.with(this).load(
                     Uri.withAppendedPath(EditPresenter.getIconsUri(this),
                             contact.getImage())
-            ).into(imageView);
+            ).fit().into(imageView);
         }
     }
 

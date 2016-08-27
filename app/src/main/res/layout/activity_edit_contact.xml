@@ -16,6 +16,7 @@
         android:saveEnabled="true"
         android:id="@+id/editImageView"
         android:src="@mipmap/ic_account_box_black_48dp"
+        android:scaleType="centerCrop"
         android:minHeight="@dimen/avatar_height"
         android:minWidth="@dimen/avatar_width"
         android:maxHeight="@dimen/avatar_height"

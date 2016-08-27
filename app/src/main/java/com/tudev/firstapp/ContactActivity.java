@@ -46,8 +46,8 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
 
     @Override
     public void setContact(Contact contact) {
-        String undefined = getString(R.string.undefined_contact);
         if(contact == null){
+            String undefined = getString(R.string.undefined_contact);
             nameTextView.setText(undefined);
             emailTextView.setText(undefined);
             phoneTextView.setText(undefined);
@@ -55,10 +55,16 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
             nameTextView.setText(contact.getName());
             emailTextView.setText(contact.getEmail());
             phoneTextView.setText(contact.getPhone());
-            Uri filename = Uri.withAppendedPath(
-                    EditPresenter.getIconsUri(this),
-                    contact.getImage());
-            Picasso.with(this).load(filename).into(imageView);
+            if(!contact.getImage().equals(Contact.EMPTY)) {
+                Uri filename = Uri.withAppendedPath(
+                        EditPresenter.getIconsUri(this),
+                        contact.getImage());
+                Picasso.with(this)
+                        .load(filename)
+                        .placeholder(R.mipmap.ic_account_box_black_48dp)
+                        .fit()
+                        .into(imageView);
+            }
         }
     }
 }
