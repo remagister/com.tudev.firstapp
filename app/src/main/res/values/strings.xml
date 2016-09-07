@@ -19,4 +19,8 @@
     <string name="contactImage_descr">Contact Image</string>
     <string name="iconCompressingFalse">Could not compress image (ICON)</string>
     <string name="thumbCompressingFalse">Could not compress image (THUMB)</string>
+
+    <string name="picker_day_name">D</string>
+    <string name="picker_month_name">M</string>
+    <string name="picker_year_name">Y</string>
 </resources>
