@@ -16,6 +16,7 @@ public class ContactDataContract {
         public static final String CONTACTS_FIELD_EMAIL = "contact_email";
         public static final String CONTACTS_FIELD_PHONE = "contact_phone";
         public static final String CONTACTS_FIELD_IMAGE = "contact_image";
+        public static final String CONTACTS_FIELD_BDAY = "contact_birth";
 
     }
 }

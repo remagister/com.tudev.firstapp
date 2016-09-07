@@ -1,18 +1,27 @@
 <resources>
     <string name="app_name">FirstApp</string>
     <string name="undefined_contact">&lt;undefined&gt;</string>
+
     <string name="name_label">Name:</string>
     <string name="email_label">Email:</string>
     <string name="phone_label">Phone:</string>
+    <string name="date_label">Birth:</string>
+    <string name="editDate_contentDescription">Edit birth date</string>
+    <string name="editDate_label">Choose date</string>
+
     <string name="add_button">add contact</string>
     <string name="edit_button">edit contact</string>
     <string name="remove_button">delete</string>
+    <string name="accept_button">Accept</string>
+
     <string name="image_change_text">Tap to load picture</string>
+
     <string name="name_hint">Type name here</string>
     <string name="email_hint">Type email here</string>
     <string name="phone_hint">Type phone here</string>
-    <string name="accept_button">Accept</string>
+
     <string name="field_empty_message">One of fields is not filled. Check it.</string>
+
     <string name="editImageView_descr">Contact image</string>
     <string name="selectImageTitle">Select Image</string>
     <string name="imageNotPickedError">Image was not picked.</string>
@@ -23,4 +32,9 @@
     <string name="picker_day_name">D</string>
     <string name="picker_month_name">M</string>
     <string name="picker_year_name">Y</string>
+
+    <!-- date picker dialog -->
+    <string name="datePicker_title">Pick date</string>
+    <string name="datePicker_ok">Pick</string>
+    <string name="datePicker_cancel">Cancel</string>
 </resources>

@@ -59,6 +59,7 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
             contact = (Contact) bundle.getSerializable(ContactActivity.CONTACT_BUNDLE_KEY);
             bitmapIcon = bundle.getParcelable(BITMAP_ICON_BUNDLE_KEY);
             bitmapThumbnail = bundle.getParcelable(BITMAP_THUMB_BUNDLE_KEY);
+            getParentView().setImage(bitmapIcon);
             super.onLoadState(bundle);
     }
 

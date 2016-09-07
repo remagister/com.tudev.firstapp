@@ -4,27 +4,58 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.dao.Contact;
+import com.tudev.firstapp.dialog.DatePickerDialog;
+import com.tudev.firstapp.dialog.OnDateSelectedListener;
 import com.tudev.firstapp.view.ViewBase;
+
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EditContactActivity extends ViewBase<IEditPresenter> implements IEditView {
 
+    private class DismissListener implements OnDateSelectedListener{
+
+        @Override
+        public void onDateSelected(Date date) {
+            lastDateValue = date;
+        }
+    }
+
+    private class AcceptListener implements OnDateSelectedListener{
+
+        @Override
+        public void onDateSelected(Date date) {
+            lastDateValue = date;
+            dateTextView.setText(dateFormat.format(lastDateValue));
+        }
+    }
+
     public static final int PICK_IMAGE_CODE = 1;
+    private static final String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
 
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
     @BindView(R.id.editPhoneText) EditText phoneEditText;
     @BindView(R.id.buttonAcceptEdit) Button okButton;
     @BindView(R.id.editImageView) ImageView imageView;
+    @BindView(R.id.editDateTextLabel) TextView dateTextView;
+    @BindView(R.id.editDateButton) ImageButton editDateButton;
+
+    private Date lastDateValue;
+    private java.text.DateFormat dateFormat;
 
     @Override
     public IEditPresenter onPresenterCreate()
@@ -38,11 +69,29 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         setContentView(R.layout.activity_edit_contact);
         ButterKnife.bind(this);
 
+        dateFormat = DateFormat.getDateFormat(this);
+
+        if (savedInstanceState != null) {
+            lastDateValue = (Date) savedInstanceState.get(DatePickerDialog.DATE_KEY);
+        }
+
+
         initializePresenter();
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getPresenter().acceptButtonClick(EditContactActivity.this);
+            }
+        });
+
+        editDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog();
+                datePickerDialog.setDate(lastDateValue);
+                datePickerDialog.setOnDateSelectedListener(new AcceptListener());
+                datePickerDialog.setOnDateDismissedListener(new DismissListener());
+                datePickerDialog.show(getSupportFragmentManager(), DATE_DIALOG_TAG);
             }
         });
 
@@ -64,6 +113,12 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
             }
         });
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(DatePickerDialog.DATE_KEY, lastDateValue);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -117,4 +172,5 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     public void setImage(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
     }
+
 }

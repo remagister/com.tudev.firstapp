@@ -76,8 +76,6 @@ public class ScrollPicker extends View {
 
     // ============== internal members ==============
 
-    public static final int MIN_YEAR = 1900;
-    public static final int MAX_YEAR = 2100;
 
     @AttributeBind(id = R.styleable.ScrollPicker_picker_textSize, type = AttributeType.INTEGER)
     int textSize = 64;
@@ -149,6 +147,10 @@ public class ScrollPicker extends View {
     }
 
     private void init() {
+        myCalendar = new GregorianCalendar(mYear, mMonth, mDay);
+        final int minYear = myCalendar.getMinimum(Calendar.YEAR);
+        final int maxYear = myCalendar.getActualMaximum(Calendar.YEAR);
+
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         textPaint.setColor(textColor);
         textPaint.setTypeface(Typeface.DEFAULT);
@@ -163,7 +165,7 @@ public class ScrollPicker extends View {
         Rect bounds4 = factory.getSampleBounds(new Rect(), "2222");
         Rect bounds2 = factory.getSampleBounds(new Rect(), "22");
 
-        yearWindow = new NumericWindow(MIN_YEAR, MAX_YEAR, factory);
+        yearWindow = new NumericWindow(minYear, maxYear, factory);
         yearWindow.setPivot(mYear);
         yearWindow.setFormat("%04d");
         year = new ItemContainer(bounds4.width(), bounds4.height(), visibleItems);
@@ -184,8 +186,6 @@ public class ScrollPicker extends View {
         month.setDataWindow(monthWindow);
         monthName = getContext().getString(R.string.picker_month_name);
         monthScroller = new Scroller(getContext());
-
-        myCalendar = new GregorianCalendar(mYear, mMonth, 1);
 
         dayWindow = new NumericWindow(1, myCalendar.getActualMaximum(Calendar.DAY_OF_MONTH), factory);
         dayWindow.setPivot(mDay);
@@ -318,6 +318,24 @@ public class ScrollPicker extends View {
         boolean ret = detector.onTouchEvent(event);
         ViewCompat.postInvalidateOnAnimation(this);
         return ret;
+    }
+
+    public void setDate(Date date){
+        Date old = myCalendar.getTime();
+        myCalendar.setTime(date);
+        mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
+        mMonth = myCalendar.get(Calendar.MONTH);
+        mYear = myCalendar.get(Calendar.YEAR);
+        yearWindow.setPivot(mYear);
+        monthWindow.setPivot(mMonth);
+        dayWindow.setMaximal(myCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        dayWindow.setPivot(mDay);
+
+        this.year.refresh();
+        this.month.refresh();
+        this.day.refresh();
+
+        sendDate(old);
     }
 
     public void setDate(int year, int month, int day) {

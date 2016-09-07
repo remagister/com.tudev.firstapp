@@ -9,7 +9,7 @@ public interface IFieldDefinition extends IDatabaseNamedItem {
     public String getDefinition();
 
     public static  enum FieldType{
-        NULL, INTEGER, REAL, TEXT, BLOB
+        NULL, INTEGER, REAL, TEXT, BLOB, NUMERIC, DATE
     }
 
     public static enum FieldModifier{

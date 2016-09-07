@@ -12,16 +12,14 @@
 
         <ImageView
             android:id="@+id/contactIconView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/avatar_width"
+            android:layout_height="@dimen/avatar_height"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
             android:adjustViewBounds="false"
             android:background="#e0e0e0"
             android:contentDescription="@string/contactImage_descr"
             android:longClickable="false"
-            android:minHeight="@dimen/avatar_height"
-            android:minWidth="@dimen/avatar_width"
             android:src="@mipmap/ic_account_box_black_48dp" />
 
         <TextView
@@ -65,7 +63,26 @@
             android:text="@string/phone_label"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         <TextView
-            android:id="@+id/contactPhoneLabel"
+            android:id="@+id/contactTextPhone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="Medium Text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#212121" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/date_label"
+            android:textAppearance="?android:textAppearanceMedium"/>
+        <TextView
+            android:id="@+id/contactTextDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

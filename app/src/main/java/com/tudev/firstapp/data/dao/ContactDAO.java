@@ -41,6 +41,7 @@ public class ContactDAO implements IContactDAO {
 
     public ContactDAO(IHelperBuilder builder) {
         IDatabaseDefinition databaseDefinition;
+
         if(firstAppearance) {
             databaseDefinition = new DatabaseDefinition(DB_NAME)
                     .table(new TableDefinition(ContactEntry.TABLE_CONTACTS)
@@ -55,8 +56,12 @@ public class ContactDAO implements IContactDAO {
                             .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_PHONE,
                                     IFieldDefinition.FieldType.TEXT))
                             .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
-                                    IFieldDefinition.FieldType.TEXT)));
+                                    IFieldDefinition.FieldType.TEXT))
+                            .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_BDAY,
+                                    IFieldDefinition.FieldType.DATE)));
+
             firstAppearance = false;
+
         } else {
             databaseDefinition = new BlankDefinition(DB_NAME);
         }

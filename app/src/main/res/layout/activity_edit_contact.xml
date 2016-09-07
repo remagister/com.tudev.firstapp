@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,101 +7,153 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.tudev.firstapp.EditContactActivity"
     android:id="@+id/contactImage">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/avatar_width"
+        android:layout_height="@dimen/avatar_height"
         android:saveEnabled="true"
+        android:layout_gravity="center_horizontal"
         android:id="@+id/editImageView"
         android:src="@mipmap/ic_account_box_black_48dp"
         android:scaleType="centerCrop"
-        android:minHeight="@dimen/avatar_height"
-        android:minWidth="@dimen/avatar_width"
-        android:maxHeight="@dimen/avatar_height"
-        android:maxWidth="@dimen/avatar_width"
         android:background="#EEE"
-        android:cropToPadding="false"
         android:padding="1dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:contentDescription="@string/editImageView_descr" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/image_change_text"
-        android:id="@+id/textView"
-        android:layout_below="@+id/editImageView"
-        android:layout_centerHorizontal="true" />
+        android:id="@+id/textView"/>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/name_label"
-        android:id="@+id/textView3"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginTop="10dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/email_label"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/nameEditText"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="10dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/name_label"
+            android:id="@+id/textView3" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/phone_label"
-        android:id="@+id/textView6"
-        android:layout_alignTop="@+id/editPhoneText"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="10dp" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/nameEditText"
+            android:hint="@string/name_hint" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/nameEditText"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="@string/name_hint" />
+    </FrameLayout>
 
-    <EditText
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:id="@+id/editEmailText"
-        android:hint="@string/email_hint"
-        android:layout_below="@+id/nameEditText"
-        android:layout_alignLeft="@+id/editPhoneText" />
+        android:layout_marginTop="10dp">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/editPhoneText"
-        android:hint="@string/phone_hint"
-        android:layout_below="@id/editEmailText"
-        android:layout_alignLeft="@id/nameEditText" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/email_label"
+            android:id="@+id/textView4" />
 
-    <Button
-        android:layout_width="160dp"
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:id="@+id/editEmailText"
+            android:hint="@string/email_hint"/>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/accept_button"
-        android:id="@+id/buttonAcceptEdit"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/phone_label"
+            android:id="@+id/textView6"/>
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:inputType="phone"
+            android:ems="10"
+            android:id="@+id/editPhoneText"
+            android:hint="@string/phone_hint"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/date_label"
+            android:id="@+id/textView7"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/editDate_label"
+                android:id="@+id/editDateTextLabel"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:contentDescription="@string/editDate_contentDescription"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/ic_edit_black_48px"
+                android:id="@+id/editDateButton"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="@string/accept_button"
+            android:id="@+id/buttonAcceptEdit"/>
+    </FrameLayout>
+
+</LinearLayout>

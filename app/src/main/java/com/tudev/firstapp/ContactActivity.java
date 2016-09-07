@@ -20,7 +20,7 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
 
     @BindView(R.id.contactTextName) TextView nameTextView;
     @BindView(R.id.contactTextEmail) TextView emailTextView;
-    @BindView(R.id.contactPhoneLabel) TextView phoneTextView; // FIXME: 03.08.2016 rename label
+    @BindView(R.id.contactTextPhone) TextView phoneTextView;
     @BindView(R.id.buttonEditContact) Button buttonEdit;
     @BindView(R.id.contactIconView) ImageView imageView;
 
