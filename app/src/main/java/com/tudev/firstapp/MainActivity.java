@@ -2,8 +2,11 @@ package com.tudev.firstapp;
 
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.SparseBooleanArray;
+import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -67,6 +70,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setToolbar();
         ButterKnife.bind(this);
         if (savedInstanceState != null) {
             getPresenter().onLoadState(savedInstanceState);
@@ -78,6 +82,12 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
                 getPresenter().buttonClicked((AddButtonIntent) actionButton.getTag());
             }
         });
+    }
+
+    void setToolbar(){
+        Toolbar tb = (Toolbar) findViewById(R.id.main_layout_toolbar);
+        setSupportActionBar(tb);
+        getSupportActionBar().setTitle(R.string.app_name);
     }
 
     public void clearChecks(){

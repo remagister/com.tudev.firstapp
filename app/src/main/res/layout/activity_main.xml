@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.tudev.firstapp.MainActivity"
-    android:background="#fafafa">
+    tools:context=".MainActivity"
+    android:background="?android:windowBackground">
+
+    <include android:id="@+id/main_layout_toolbar"
+        layout="@layout/appcompat_toolbar"/>
 
     <ListView
         android:layout_width="fill_parent"
@@ -14,7 +17,7 @@
         android:layout_weight="1.50"
         android:choiceMode="multipleChoice"
         android:clickable="true"
-        android:background="#ffffff" />
+        android:background="?android:colorBackground" />
 
     <Button
         style="@style/AddButtonStyle"

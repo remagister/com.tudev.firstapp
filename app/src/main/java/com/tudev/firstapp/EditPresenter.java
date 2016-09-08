@@ -99,7 +99,9 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
 
     @Override
     public void initialize() {
-        getParentView().setContact(contact);
+        IEditView parent = getParentView();
+        parent.initIntent(editingIntent);
+        parent.setContact(contact);
     }
 
     @Override
@@ -182,14 +184,12 @@ public class EditPresenter extends ContactPresenterBase<IEditView> implements IE
                 info = new ImageInfo(getStream(context, uri), bitmapOptions);
                 int wid = getDimension(context, R.dimen.avatar_width);
                 int hei = getDimension(context, R.dimen.avatar_height);
-                bitmapIcon = Bitmap.createScaledBitmap(
-                        ImageCompressingUnit.getCompressedBitmap(wid, hei, info), wid, hei, true);
+                bitmapIcon = ImageCompressingUnit.getCompressedBitmap(wid, hei, info);
                 info.getStream().close();
                 wid = getDimension(context, R.dimen.thumbnail_width);
                 hei = getDimension(context, R.dimen.thumbnail_height);
                 info = new ImageInfo(getStream(context, uri), bitmapOptions);
-                bitmapThumbnail = Bitmap.createScaledBitmap(
-                        ImageCompressingUnit.getCompressedBitmap(wid, hei, info), wid, hei, true);
+                bitmapThumbnail = ImageCompressingUnit.getCompressedBitmap(wid, hei, info);
                 info.getStream().close();
                 getParentView().setImage(bitmapIcon);
             } catch (IOException e) {

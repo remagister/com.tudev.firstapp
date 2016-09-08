@@ -9,11 +9,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        app:picker_textColor="@color/colorPrimaryDark"
+        app:picker_textColor="?android:textColorPrimary"
         app:picker_textSize="82"
         app:picker_labelSize="42"
+        app:picker_labelColor="?android:textColorHint"
 
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/dateScrollPicker" />
+
 </RelativeLayout>

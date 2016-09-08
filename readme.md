@@ -16,7 +16,8 @@ Last branch - **'dialog'**
 * [x] Part 4.1 - Images & thumbs saving, caching and viewing established.
 * [x] Part 5 - EventBus injection.
 * [x] Part 6 - Custom calendar view.
-* [ ] Part 7 - Themes support. Bigender contact.
+* [x] Part 7 - Themes support.
+* [ ] Part 8 - Bigender contact.
 
 ## Known issues:
 

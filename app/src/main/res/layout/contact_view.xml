@@ -16,6 +16,9 @@
                 android:layout_column="0"
                 android:layout_row="0"
                 android:layout_rowSpan="2"
+                android:layout_width="@dimen/thumbnail_width"
+                android:layout_height="@dimen/thumbnail_height"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/ic_account_box_black_48dp"
                 android:contentDescription="@string/contactImage_descr"
                 android:layout_margin="5dp"/>
@@ -27,6 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
                     android:text="Large Text"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -36,6 +40,7 @@
                     android:id="@+id/descrText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
                     android:text="Small Text"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
         </GridLayout>

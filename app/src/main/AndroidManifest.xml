@@ -7,8 +7,9 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:allowBackup="false">
+        android:theme="@style/AppThemeColored"
+        android:allowBackup="false"
+        android:name=".app.ContactsApplication">
 
         <activity android:name=".MainActivity">
             <intent-filter>

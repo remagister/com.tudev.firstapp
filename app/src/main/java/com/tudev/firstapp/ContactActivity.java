@@ -2,8 +2,10 @@ package com.tudev.firstapp;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -39,6 +41,7 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+        setToolbar();
         ButterKnife.bind(this);
 
         dateFormat = DateFormat.getDateFormat(this);
@@ -50,6 +53,12 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
                 getPresenter().onEditButtonClick();
             }
         });
+    }
+
+    void setToolbar(){
+        Toolbar tb = (Toolbar) findViewById(R.id.contact_layout_toolbar);
+        setSupportActionBar(tb);
+        getSupportActionBar().setTitle(R.string.viewContact_header);
     }
 
     @Override
@@ -74,7 +83,6 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
                 Picasso.with(this)
                         .load(filename)
                         .placeholder(R.mipmap.ic_account_box_black_48dp)
-                        .fit()
                         .into(imageView);
             }
         }

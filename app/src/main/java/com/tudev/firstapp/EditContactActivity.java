@@ -4,10 +4,13 @@ package com.tudev.firstapp;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateFormat;
+    import android.support.v7.app.ActionBar;
+    import android.support.v7.widget.Toolbar;
+    import android.text.format.DateFormat;
     import android.util.Log;
     import android.view.View;
-import android.widget.Button;
+    import android.view.ViewGroup;
+    import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -172,7 +175,7 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
             Picasso.with(this).load(
                     Uri.withAppendedPath(EditPresenter.getIconsUri(this),
                             contact.getImage())
-            ).fit().into(imageView);
+            )   .into(imageView);
         }
     }
 
@@ -196,6 +199,22 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     @Override
     public void setImage(Bitmap bitmap) {
         imageView.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void initIntent(ContactActionIntent intent) {
+        Toolbar tb = (Toolbar) findViewById(R.id.contactEdit_layout_toolbar);
+        setSupportActionBar(tb);
+        ActionBar bar = getSupportActionBar();
+
+        switch (intent){
+            case CREATE:
+                bar.setTitle(R.string.createContact_header);
+                break;
+            case UPDATE:
+                bar.setTitle(R.string.editContact_header);
+                break;
+        }
     }
 
 }

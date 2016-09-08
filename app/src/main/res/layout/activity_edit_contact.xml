@@ -1,53 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    tools:context="com.tudev.firstapp.EditContactActivity"
-    android:id="@+id/contactImage">
+    style="@style/activityRoot"
+    tools:context="com.tudev.firstapp.EditContactActivity">
+
+    <include android:id="@+id/contactEdit_layout_toolbar"
+        layout="@layout/appcompat_toolbar"/>
 
     <ImageView
-        android:layout_width="@dimen/avatar_width"
-        android:layout_height="@dimen/avatar_height"
-        android:saveEnabled="true"
+        android:layout_marginTop="20dp"
+        style="@style/ContactIcon"
         android:layout_gravity="center_horizontal"
         android:id="@+id/editImageView"
         android:src="@mipmap/ic_account_box_black_48dp"
-        android:scaleType="centerCrop"
-        android:background="#EEE"
-        android:padding="1dp"
         android:contentDescription="@string/editImageView_descr" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextBase"
         android:layout_gravity="center_horizontal"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/image_change_text"
         android:id="@+id/textView"/>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+    <FrameLayout style="@style/contactFrameLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
+            style="@style/TextBase.Left"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/name_label"
             android:id="@+id/textView3" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            style="@style/TextBase.Right"
             android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/nameEditText"
@@ -55,23 +39,16 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+    <FrameLayout style="@style/contactFrameLayout">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
+            style="@style/TextBase.Left"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/email_label"
             android:id="@+id/textView4" />
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
+            style="@style/TextBase.Right"
             android:inputType="textEmailAddress"
             android:ems="10"
             android:id="@+id/editEmailText"
@@ -80,15 +57,10 @@
     </FrameLayout>
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+    <FrameLayout style="@style/contactFrameLayout" >
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start|center_vertical"
+            style="@style/TextBase.Left"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/phone_label"
             android:id="@+id/textView6"/>
@@ -104,9 +76,7 @@
 
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <FrameLayout style="@style/contactFrameLayout"
         android:layout_marginTop="15dp">
 
         <TextView
@@ -124,11 +94,9 @@
             android:layout_gravity="end">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
+                style="@style/TextBase.Left"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/editDate_label"
+                android:hint="@string/editDate_label"
                 android:id="@+id/editDateTextLabel"/>
 
             <ImageButton
@@ -146,7 +114,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="0dp">
 
         <Button
             android:layout_width="160dp"

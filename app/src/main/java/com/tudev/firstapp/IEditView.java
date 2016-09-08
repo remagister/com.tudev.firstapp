@@ -21,4 +21,6 @@ public interface IEditView extends IView {
 
     void setImage(Bitmap bitmap);
 
+    void initIntent(ContactActionIntent intent);
+
 }

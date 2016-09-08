@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FirstApp</string>
+    <string name="app_name">Contacts</string>
     <string name="undefined_contact">&lt;undefined&gt;</string>
 
     <string name="name_label">Name:</string>
@@ -8,6 +8,10 @@
     <string name="date_label">Birth:</string>
     <string name="editDate_contentDescription">Edit birth date</string>
     <string name="editDate_label">Choose date</string>
+
+    <string name="viewContact_header">View contact</string>
+    <string name="editContact_header">Edit contact</string>
+    <string name="createContact_header">Create contact</string>
 
     <string name="add_button">add contact</string>
     <string name="edit_button">edit contact</string>
@@ -37,4 +41,9 @@
     <string name="datePicker_title">Pick date</string>
     <string name="datePicker_ok">Pick</string>
     <string name="datePicker_cancel">Cancel</string>
+
+    <!-- menu -->
+    <string name="settings_menu_title">Settings</string>
+    <string name="menu_default_theme">Enable default theme</string>
+    <string name="menu_alt_theme">Enable alternate theme</string>
 </resources>
