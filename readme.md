@@ -1,7 +1,7 @@
 #Android Task (contacts list)
 
-### Days elapsed: 25 (from initial commit 27.07).
-Last branch - **'image'**
+### Days elapsed: 43 (from initial commit 27.07).
+Last branch - **'dialog'**
 
 * [x] Part 1 - ListView and Activities.
 * [x] Part 2 - SQLite and activity interaction.
@@ -14,8 +14,8 @@ Last branch - **'image'**
 * [x] Part 3.2 - Listview stability improved.
 * [x] Part 4 - Image loading stabilized, saving and restoring routines added.
 * [x] Part 4.1 - Images & thumbs saving, caching and viewing established.
-* [ ] Part 5 - EventBus injection.
-* [ ] Part 6 - Custom calendar view.
+* [x] Part 5 - EventBus injection.
+* [x] Part 6 - Custom calendar view.
 * [ ] Part 7 - Themes support. Bigender contact.
 
 ## Known issues:
@@ -26,8 +26,11 @@ Last branch - **'image'**
 4. ~~Main list can be multiselected, but cannot return to normal mode.~~
 5. ~~ContactDAO is closed in MainActivity/onDestroy -> access to a closed file exception.~~
 6. ~~When editing contact, previously loaded image icon may eventually disappear on orientation change.~~
-7. Thumbnails not well aligned enough.
-8. Contact and edit contact screens' layout ruins in landscape mode. 
+7. ~~Thumbnails are not well aligned enough.~~
+8. ~~Contact and edit contact screens' layout ruins in landscape mode.~~
 9. Not an actual bug, but images stretching is harsh.
 10. Empty contact image thumbnail is somehow replaced by an another random pic.
-  
+
+### Images
+
+![Date picker dialog](https://github.com/remagister/com.tudev.firstapp/blob/master/img/scroll.gif)

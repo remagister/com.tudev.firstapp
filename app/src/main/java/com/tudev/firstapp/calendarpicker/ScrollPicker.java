@@ -57,10 +57,12 @@ public class ScrollPicker extends View {
         public boolean onDown(MotionEvent e) {
             if (year.hit(e.getX(), e.getY())) {
                 scroller = yearScroller;
+                dayScroller.forceFinished(true);
                 container = year;
             } else {
                 if (month.hit(e.getX(), e.getY())) {
                     scroller = monthScroller;
+                    dayScroller.forceFinished(true);
                     container = month;
                 } else {
                     scroller = dayScroller;
