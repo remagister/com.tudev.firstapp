@@ -18,4 +18,5 @@ public interface IEditPresenter extends IPresenter {
     void acceptButtonClick(Context context);
 
     void onImageReceived(Context context, Uri imageUri);
+
 }

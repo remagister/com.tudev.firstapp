@@ -1,8 +1,13 @@
 package com.tudev.firstapp.data.dao;
 
 import android.support.annotation.NonNull;
+import android.text.format.DateFormat;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Саша on 26.07.2016.
@@ -11,12 +16,15 @@ import java.io.Serializable;
 public class Contact implements Serializable, Comparable<Contact>{
 
     public static final String EMPTY = "";
+    private static final String ISO_DATE = "yyyy-MM-dd";
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat(ISO_DATE, Locale.ENGLISH);
 
     private String name = EMPTY;
     private String email = EMPTY;
     private String phone = EMPTY;
     private long id;
     private String image = EMPTY;
+    private String date = EMPTY;
 
     public Contact(long id){
         this.id = id;
@@ -58,8 +66,29 @@ public class Contact implements Serializable, Comparable<Contact>{
     public String getImage() {
         return image;
     }
+
     public void setImage(String ref){
         image = ref;
+    }
+
+    public Date getNativeDate(){
+        try {
+            return dateFormat.parse(date);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    public void setNativeDate(Date date){
+        this.date = dateFormat.format(date);
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     @Override
@@ -72,11 +101,9 @@ public class Contact implements Serializable, Comparable<Contact>{
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("ID: ").append(id)
-                .append(name).append(", ")
-                .append(email).append(", ");
-        return builder.toString();
+        return "ID: " + id +
+                name + ", " +
+                email + ", ";
     }
 
     public static class ContactSimple implements Serializable{

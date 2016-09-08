@@ -1,11 +1,12 @@
 package com.tudev.firstapp;
 
-import android.content.Intent;
+    import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.view.View;
+    import android.util.Log;
+    import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,7 +20,6 @@ import com.tudev.firstapp.dialog.OnDateSelectedListener;
 import com.tudev.firstapp.view.ViewBase;
 
 import java.util.Date;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,12 +39,15 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         @Override
         public void onDateSelected(Date date) {
             lastDateValue = date;
+            actualDate = date;
             dateTextView.setText(dateFormat.format(lastDateValue));
         }
     }
 
-    public static final int PICK_IMAGE_CODE = 1;
+    private static final int PICK_IMAGE_CODE = 1;
     private static final String DATE_DIALOG_TAG = "DATE_DIALOG_TAG";
+    private static final String ACTUAL_DATE_KEY = "ACTUAL_DATE";
+
 
     @BindView(R.id.nameEditText) EditText nameEditText;
     @BindView(R.id.editEmailText) EditText emailEditText;
@@ -55,6 +58,7 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     @BindView(R.id.editDateButton) ImageButton editDateButton;
 
     private Date lastDateValue;
+    private Date actualDate;
     private java.text.DateFormat dateFormat;
 
     @Override
@@ -70,10 +74,6 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         ButterKnife.bind(this);
 
         dateFormat = DateFormat.getDateFormat(this);
-
-        if (savedInstanceState != null) {
-            lastDateValue = (Date) savedInstanceState.get(DatePickerDialog.DATE_KEY);
-        }
 
 
         initializePresenter();
@@ -116,8 +116,23 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        lastDateValue = (Date) savedInstanceState.getSerializable(DatePickerDialog.DATE_KEY);
+        actualDate = (Date) savedInstanceState.getSerializable(ACTUAL_DATE_KEY);
+        if(actualDate != null) {
+            dateTextView.setText(dateFormat.format(actualDate));
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(DatePickerDialog.DATE_KEY, lastDateValue);
+        if(lastDateValue != null) {
+            outState.putSerializable(DatePickerDialog.DATE_KEY, lastDateValue);
+        }
+        if(actualDate != null){
+            outState.putSerializable(ACTUAL_DATE_KEY, actualDate);
+        }
         super.onSaveInstanceState(outState);
     }
 
@@ -146,6 +161,13 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         nameEditText.setText(contact.getName());
         emailEditText.setText(contact.getEmail());
         phoneEditText.setText(contact.getPhone());
+        actualDate = contact.getNativeDate();
+        lastDateValue = actualDate;
+
+        if(actualDate != null) {
+            dateTextView.setText(dateFormat.format(actualDate));
+        }
+
         if(!contact.getImage().equals(Contact.EMPTY)){
             Picasso.with(this).load(
                     Uri.withAppendedPath(EditPresenter.getIconsUri(this),
@@ -166,6 +188,9 @@ public class EditContactActivity extends ViewBase<IEditPresenter> implements IEd
         outContact.setName(nameEditText.getText().toString());
         outContact.setEmail(emailEditText.getText().toString());
         outContact.setPhone(phoneEditText.getText().toString());
+        if(actualDate != null) {
+            outContact.setNativeDate(lastDateValue);
+        }
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.tudev.firstapp.data.helper.IHelperBuilder;
 import com.tudev.firstapp.data.sql.BlankDefinition;
@@ -58,7 +57,7 @@ public class ContactDAO implements IContactDAO {
                             .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_IMAGE,
                                     IFieldDefinition.FieldType.TEXT))
                             .column(new FieldDefinition(ContactEntry.CONTACTS_FIELD_BDAY,
-                                    IFieldDefinition.FieldType.DATE)));
+                                    IFieldDefinition.FieldType.TEXT)));
 
             firstAppearance = false;
 
@@ -67,6 +66,8 @@ public class ContactDAO implements IContactDAO {
         }
         helper = builder.build(databaseDefinition);
     }
+
+    // FIXME: 08.09.16 multitask operations may fail if read and write access is simultaneous
 
     @Override
     public IContactReader getReader() {
@@ -147,10 +148,7 @@ public class ContactDAO implements IContactDAO {
     }
     private void cacheUpdate(Contact.ContactSimple newContact){
         if (contactList != null) {
-            Log.d(getClass().getName(), "cache update: contact id " + newContact.getId());
-            Log.d(getClass().getName(), "cache update: list " + contactList.size());
             int index = contactList.indexOf(newContact);
-            Log.d(getClass().getName(), "cache update: index " + index);
             contactList.set(index, newContact);
         }
     }
@@ -188,7 +186,6 @@ public class ContactDAO implements IContactDAO {
                 builder.append(')');
                 externalDb.execSQL(builder.toString());
                 cacheRemove(removal);
-                Log.d("DAO/removeContacts", "CONTACTS_LIST_OBJ " + contactList.hashCode());
             }
         }
 
@@ -198,6 +195,7 @@ public class ContactDAO implements IContactDAO {
             val.put(ContactEntry.CONTACTS_FIELD_EMAIL, contact.getEmail());
             val.put(ContactEntry.CONTACTS_FIELD_PHONE, contact.getPhone());
             val.put(ContactEntry.CONTACTS_FIELD_IMAGE, contact.getImage());
+            val.put(ContactEntry.CONTACTS_FIELD_BDAY, contact.getDate());
             return val;
         }
 
@@ -206,7 +204,6 @@ public class ContactDAO implements IContactDAO {
             externalDb.update(ContactEntry.TABLE_CONTACTS, getValues(newContact),
                     ContactEntry._ID + " = ?",
                     new String[] {String.valueOf(id)});
-            Log.d(getClass().getName(), "Contact updated: " + newContact.toString());
             cacheUpdate(new Contact.ContactSimple(id, newContact));
         }
 
@@ -231,6 +228,7 @@ public class ContactDAO implements IContactDAO {
             contact.setName(getString(cursor, ContactEntry.CONTACTS_FIELD_NAME));
             contact.setEmail(getString(cursor, ContactEntry.CONTACTS_FIELD_EMAIL));
             contact.setImage(getString(cursor, ContactEntry.CONTACTS_FIELD_IMAGE));
+            contact.setDate(getString(cursor, ContactEntry.CONTACTS_FIELD_BDAY));
             return contact;
         }
 

@@ -212,7 +212,7 @@ public class ScrollPicker extends View {
             public void onItemChanged(IContainer sender, Object from, Object to) {
                 mMonth = (int) to;
                 Date old = myCalendar.getTime();
-                myCalendar.set(Calendar.MONTH, mMonth);
+                myCalendar.set(Calendar.MONTH, mMonth - 1);
                 dayWindow.setMaximal(myCalendar.getActualMaximum(Calendar.DAY_OF_MONTH));
                 day.refresh();
                 sendDate(old);
@@ -224,6 +224,7 @@ public class ScrollPicker extends View {
             public void onItemChanged(IContainer sender, Object from, Object to) {
                 mDay = (int) to;
                 Date old = myCalendar.getTime();
+                myCalendar.set(Calendar.DAY_OF_MONTH, mDay);
                 sendDate(old);
             }
         });
@@ -324,7 +325,7 @@ public class ScrollPicker extends View {
         Date old = myCalendar.getTime();
         myCalendar.setTime(date);
         mDay = myCalendar.get(Calendar.DAY_OF_MONTH);
-        mMonth = myCalendar.get(Calendar.MONTH);
+        mMonth = myCalendar.get(Calendar.MONTH) + 1;
         mYear = myCalendar.get(Calendar.YEAR);
         yearWindow.setPivot(mYear);
         monthWindow.setPivot(mMonth);

@@ -2,6 +2,7 @@ package com.tudev.firstapp;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.tudev.firstapp.data.dao.Contact;
 import com.tudev.firstapp.view.ViewBase;
+
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,8 +24,11 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
     @BindView(R.id.contactTextName) TextView nameTextView;
     @BindView(R.id.contactTextEmail) TextView emailTextView;
     @BindView(R.id.contactTextPhone) TextView phoneTextView;
+    @BindView(R.id.contactTextDate) TextView dateTextView;
     @BindView(R.id.buttonEditContact) Button buttonEdit;
     @BindView(R.id.contactIconView) ImageView imageView;
+
+    private java.text.DateFormat dateFormat;
 
     @Override
     public IContactPresenter onPresenterCreate() {
@@ -34,6 +40,8 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
         ButterKnife.bind(this);
+
+        dateFormat = DateFormat.getDateFormat(this);
 
         initializePresenter();
         buttonEdit.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +63,10 @@ public class ContactActivity extends ViewBase<IContactPresenter> implements ICon
             nameTextView.setText(contact.getName());
             emailTextView.setText(contact.getEmail());
             phoneTextView.setText(contact.getPhone());
+            Date date = contact.getNativeDate();
+            if (date != null){
+                dateTextView.setText(dateFormat.format(date));
+            }
             if(!contact.getImage().equals(Contact.EMPTY)) {
                 Uri filename = Uri.withAppendedPath(
                         EditPresenter.getIconsUri(this),
