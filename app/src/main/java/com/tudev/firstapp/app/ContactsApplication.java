@@ -4,6 +4,11 @@ import android.app.Application;
 import android.content.SharedPreferences;
 
 import com.tudev.firstapp.R;
+import com.tudev.firstapp.data.Contacts;
+import com.tudev.firstapp.data.dao.Contact;
+import com.tudev.firstapp.data.dao.ContactDAO;
+import com.tudev.firstapp.data.dao.IContactDAO;
+import com.tudev.firstapp.data.helper.SQLiteHelperBuilder;
 import com.tudev.firstapp.prefs.AppPreferences;
 
 /**
@@ -12,11 +17,16 @@ import com.tudev.firstapp.prefs.AppPreferences;
 
 public class ContactsApplication extends Application {
 
+    private static ContactsApplication applicationInstance;
     private static final String PREFERENCES = "shared";
     private static final String FIRST_ASSIGNATION = "fa";
     public static final String THEME_KEY = "theme";
 
     private SharedPreferences preferences;
+
+    public static ContactsApplication getApplicationInstance(){
+        return applicationInstance;
+    }
 
     @Override
     public void onCreate() {
@@ -33,6 +43,11 @@ public class ContactsApplication extends Application {
             _switchTheme(theme);
         }
 
+        applicationInstance = this;
+    }
+
+    public IContactDAO openContactDao(){
+        return new ContactDAO(new SQLiteHelperBuilder(this));
     }
 
     private void _switchTheme(int theme){

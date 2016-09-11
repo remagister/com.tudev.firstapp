@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.tudev.firstapp.data.helper.IHelperBuilder;
 import com.tudev.firstapp.data.sql.BlankDefinition;
@@ -111,6 +112,7 @@ public class ContactDAO implements IContactDAO {
         }
         helper.close();
         closed = true;
+        Log.d("CONTACT_DAO", "Dao is about to close / finalize");
     }
 
     @Override

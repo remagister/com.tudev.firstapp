@@ -1,8 +1,10 @@
 package com.tudev.firstapp;
 
+import android.app.AlarmManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.View;
@@ -87,7 +89,7 @@ public class MainActivity extends ViewBase<IMainPresenter> implements IMainView 
     void setToolbar(){
         Toolbar tb = (Toolbar) findViewById(R.id.main_layout_toolbar);
         setSupportActionBar(tb);
-        getSupportActionBar().setTitle(R.string.app_name);
+        tb.setTitle(R.string.app_name);
     }
 
     public void clearChecks(){

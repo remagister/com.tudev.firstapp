@@ -8,75 +8,89 @@
     <include android:id="@+id/contact_layout_toolbar"
         layout="@layout/appcompat_toolbar" />
 
-
-    <ImageView
-        android:id="@+id/contactIconView"
-        style="@style/ContactIcon"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:adjustViewBounds="false"
-        android:contentDescription="@string/contactImage_descr"
-        android:longClickable="false"
-        android:src="@mipmap/ic_account_box_black_48dp" />
-
-    <TextView
-        android:id="@+id/contactTextName"
-        style="@style/TextBase"
-        android:layout_gravity="center_horizontal"
-        android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <FrameLayout style="@style/contactFrameLayout">
-
-        <TextView
-            style="@style/TextBase.Left"
-            android:text="@string/email_label" />
-
-        <TextView
-            android:id="@+id/contactTextEmail"
-            style="@style/TextBase.Right"
-            android:text="Medium Text" />
-
-    </FrameLayout>
-
-    <FrameLayout style="@style/contactFrameLayout">
-
-        <TextView
-            android:id="@+id/textView5"
-            style="@style/TextBase.Left"
-            android:text="@string/phone_label" />
-
-        <TextView
-            android:id="@+id/contactTextPhone"
-            style="@style/TextBase.Right"
-            android:text="Medium Text" />
-
-    </FrameLayout>
-
-    <FrameLayout style="@style/contactFrameLayout">
-
-    <TextView
-            style="@style/TextBase.Left"
-            android:text="@string/date_label"
-            android:textAppearance="?android:textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/contactTextDate"
-            style="@style/TextBase.Right"
-            android:text="Medium Text" />
-
-    </FrameLayout>
-
-    <FrameLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp">
 
-        <Button
-            android:id="@+id/buttonEditContact"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:text="@string/edit_button" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="4">
 
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/contactIconView"
+                style="@style/ContactIcon"
+                android:layout_gravity="center_horizontal"
+                android:adjustViewBounds="false"
+                android:contentDescription="@string/contactImage_descr"
+                android:longClickable="false"
+                android:src="@mipmap/ic_account_box_black_48dp" />
+
+            <TextView
+                android:id="@+id/contactTextName"
+                style="@style/TextBase"
+                android:layout_gravity="center_horizontal"
+                android:text="Large Text"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <FrameLayout style="@style/contactFrameLayout">
+
+                <TextView
+                    style="@style/TextBase.Left"
+                    android:text="@string/email_label" />
+
+                <TextView
+                    android:id="@+id/contactTextEmail"
+                    style="@style/TextBase.Right"
+                    android:text="Medium Text" />
+
+            </FrameLayout>
+
+            <FrameLayout style="@style/contactFrameLayout">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    style="@style/TextBase.Left"
+                    android:text="@string/phone_label" />
+
+                <TextView
+                    android:id="@+id/contactTextPhone"
+                    style="@style/TextBase.Right"
+                    android:text="Medium Text" />
+
+            </FrameLayout>
+
+            <FrameLayout style="@style/contactFrameLayout">
+
+                <TextView
+                    style="@style/TextBase.Left"
+                    android:text="@string/date_label"
+                    android:textAppearance="?android:textAppearanceMedium" />
+
+                <TextView
+                    android:id="@+id/contactTextDate"
+                    style="@style/TextBase.Right"
+                    android:text="Medium Text" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:id="@+id/buttonEditContact"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:text="@string/edit_button" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.tudev.firstapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tudev.firstapp.adapter.ContactAdapterState;
 import com.tudev.firstapp.data.Contacts;

@@ -2,7 +2,9 @@ package com.tudev.firstapp.presenter;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.tudev.firstapp.data.Contacts;
 import com.tudev.firstapp.data.dao.ContactDAO;
 import com.tudev.firstapp.data.dao.IContactDAO;
 import com.tudev.firstapp.data.dao.IContactReader;
@@ -16,23 +18,23 @@ import java.io.IOException;
  * Created by arseniy on 10.08.16.
  */
 
-public abstract class ContactPresenterBase<VT extends IView> implements IPresenter {
+public abstract class ContactPresenterBase<V extends IView> implements IPresenter {
 
     private IContactDAO contacts;
     private IView parentView;
     private boolean disposal;
 
-    public ContactPresenterBase(VT view) {
+    public ContactPresenterBase(V view) {
         this(view, false);
     }
 
-    public ContactPresenterBase(VT view, boolean onDisposalNeeded){
+    public ContactPresenterBase(V view, boolean onDisposalNeeded){
         parentView = view;
         disposal = onDisposalNeeded;
     }
 
-    public VT getParentView() {
-        return (VT) parentView;
+    public V getParentView() {
+        return (V) parentView;
     }
 
     protected IContactReader getReader(){
@@ -49,8 +51,7 @@ public abstract class ContactPresenterBase<VT extends IView> implements IPresent
 
     @Override
     public void onCreate(Context context) {
-        contacts = new ContactDAO(new SQLiteHelperBuilder(
-                context.getApplicationContext()));
+        contacts = Contacts.INSTANCE.getDao();
     }
 
     @Override
@@ -86,11 +87,8 @@ public abstract class ContactPresenterBase<VT extends IView> implements IPresent
     @Override
     public void onDestroy() {
         if(disposal) {
-            try {
-                contacts.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Contacts.INSTANCE.tryRelease();
+            Log.d("DESTROY", "trying to destroy a disposable activity");
         }
     }
 }
